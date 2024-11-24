@@ -161,3 +161,39 @@ code difficult to be realized.
 
 ## Layered Architecture 
 
+when domain-related code is mixed with the other
+layers, it becomes extremely difficult to see and think about.
+Superficial changes to the UI can actually change business logic.
+To change a business rule may require meticulous tracing of UI
+code, database code, or other program elements. Implementing
+coherent, model-driven objects becomes impractical. Automated
+testing is awkward.
+
+> <b> Therefore, partition a complex program into LAYERS. Develop
+a design within each LAYER that is cohesive and that depends
+only on the layers below. Follow standard architectural patterns
+to provide loose coupling to the layers above. </b>
+
+*Concentrate all the code related to the domain model in one layer and isolate it from the user interface, application, and infrastructure code.*
+
+<b> A common architectural solution for domain-driven designs contain four conceptual layers:</b>
+
++ <b>User Interface</b> (Presentation Layer): Responsible for presenting information to the user and interpreting user commands.
++ <b>Application</b> Layer: This is a thin layer which coordinates the application activity. It does not contain business logic. It does not hold the state of the business objects, but it can hold the state of an application task progress.
++ <b>Domain</b> Layer: This layer contains information about the domain. This is the heart of the business software. The state of business objects is held here.
++ <b>Infrastructure</b> Layer: This layer acts as a supporting library for all the other layers. It provides communication between layers, implements persistence for business objects, contains supporting libraries for the user interface layer, etc.
+
+It is important to divide an application in separate layers, and
+establish rules of interactions between the layers. If the code is
+not clearly separated into layers, it will soon become so
+entangled that it becomes very difficult to manage changes.
+
+For example, a typical interaction of the application, domain and
+infrastructure could look like this. The user wants to book a
+flights route, and asks an application service in the application
+layer to do so. The application tier fetches the relevant domain
+objects from the infrastructure and invokes relevant methods on
+them, e.g., to check security margins to other already booked
+flights. Once the domain objects have made all checks and
+updated their status to “decided”, the application service persists
+the objects to the infrastructure.
