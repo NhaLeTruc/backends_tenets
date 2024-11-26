@@ -199,7 +199,7 @@ flights. Once the domain objects have made all checks and
 updated their status to “decided”, the application service persists
 the objects to the infrastructure.
 
-## Entities
+## 1. Entities
 
 There is a category of objects which seem to have an identity,
 which remains the same throughout the states of the software.
@@ -225,7 +225,7 @@ should be considered from the beginning of the modeling
 process. It is also important to determine if an object needs to be
 an entity or not.
 
-## Value Objects
+## 2. Value Objects
 
 It takes a lot of careful
 thinking to decide what makes an identity, because a wrong
@@ -260,7 +260,7 @@ Objects can be shared.**
 Value Objects can contain other Value Objects, and they can
 even contain references to Entities.
 
-## Services
+## 3. Services
 
 When we analyze the domain and try to define the main objects
 that make up the model, we discover that some aspects of the
@@ -309,7 +309,7 @@ isolated. It is easy to get confused between services which
 belong to the domain layer, and those belonging to the
 infrastructure and application layer.
 
-## Modules
+## 4. Modules
 
 For a large and complex application, the model tends to grow
 bigger and bigger. The model reaches a point where it is hard to
@@ -323,7 +323,7 @@ Modules are widely used in most projects. It is easier to get the
 picture of a large model if you look at the modules it contains,
 then at the relationships between those modules. After the
 interaction between modules is understood, one can start
-figuring out the details inside of a module. It’s a simple and
+figuring out the details inside of a module. It's a simple and
 efficient way to manage complexity.
 
 + Communicational cohesion is achieved
@@ -342,6 +342,231 @@ refactoring may be more expensive than a class refactoring, but
 when a module design mistake is found, it is better to address it
 by changing the module then by finding ways around it.
 
-## Aggregates
+## 5. Aggregates
 
+Domain objects go through a set of states during their
+life time. They are created, placed in memory and used in
+computations, and they are destroyed. In some cases they are
+saved in permanent locations, like a database, where they can be
+retrieved from some time later, or they can be archived. At some
+point they can be completely erased from the system, including
+database and the archive storage.
+
+Managing the life cycle of a domain object constitutes a
+challenge in itself, and if it is not done properly, it may have a
+negative impact on the domain model.
+
+*Aggregate is a domain
+pattern used to define object ownership and boundaries.
+Factories and Repositories are two design patterns which help us
+deal with object creation and storage.*
+---
+
+For every traversable association in the model,
+there has to be corresponding software mechanism which
+enforces it. Real associations between domain object end up in
+the code, and many times even in the database. 
+
+A one-to-one relationship between a customer and the bank account opened on
+his name is expressed as a reference between two objects, and
+implies a relationship between two database tables, the one
+which keeps the customers and the one which keeps the
+accounts.
+
+A one-to-many association is more complex because it involves
+many objects which become related. This relationship can be
+simplified by transforming it into an association between one
+object and a collection of other objects, although it is not always
+possible.
+
+There are many-to-many associations and a large number of
+them are bidirectional. This increases complexity a lot, making
+the life cycle management of such objects quite difficult.
+
++ Firstly, associations which are not essential for the model should
+be removed. They may exist in the domain, but they are not
+necessary in our model, so take them out.
+
++ Secondly, multiplicity can be reduced by adding a constraint. If many objects satisfy a
+relationship, it is possible that only one will do it if the right
+constraint is imposed on the relationship.
+
++ Thirdly, many times bidirectional associations can be transformed in unidirectional
+ones. Each car has an engine, and every engine has a car where it
+runs. The relationship is bidirectional, but it can be easily
+simplified considering that the car has an engine, and not the
+other way around.
+
+When the system archives or
+completely deletes information about a customer, it has to make
+sure that all the references are removed. If many objects hold
+such references, it is difficult to ensure that they are all removed.
+Also, when some data changes for a customer, the system has to
+make sure that it is properly updated throughout the system, and
+data integrity is guaranteed. This is usually left to be addressed
+at database level. Transactions are used to enforce data integrity.
+
+But if the model was not carefully designed, there will be a high
+degree of database contention, resulting in poor performance.
+While database transactions play a vital role in such operations,
+it is desirable to solve some of the problems related to data
+integrity directly in the model.
+
+It is also necessary to be able to enforce the invariants. The
+invariants are those rules which have to be maintained whenever
+data changes. This is difficult to realize when many objects hold
+references to changing data objects.
+
+It is difficult to guarantee the consistency of changes to objects
+in a model with complex associations. Many times invariants
+apply to closely related objects, not just discrete ones. Yet
+cautious locking schemes cause multiple users to interfere
+pointlessly with each other and make a system unusable.
+
+> **An Aggregate is a group of
+associated objects which are considered as one unit with regard
+to data changes.**
+
+The Aggregate is demarcated by a boundary
+which separates the objects inside from those outside. Each
+Aggregate has one root. The root is an Entity, and it is the only
+object accessible from outside. The root can hold references to
+any of the aggregate objects, and the other objects can hold
+references to each other, but an outside object can hold
+references only to the root object. If there are other Entities
+inside the boundary, the identity of those entities is local,
+making sense only inside the aggregate.
+
+## 6. Factories
+
+Entities and Aggregates can often be large and complex - too
+complex to create in the constructor of the root entity. Infact
+trying to construct a complex aggregate in its constructure is in
+contradiction with what often happens in the domain itself,
+where things are created by other things (like electronics get
+created in on assembly lines). It is like having the printer build
+itself.
+
+Creation of an object can be a major operation in itself, but
+complex assembly operations do not fit the responsibility of the
+created objects. Combining such responsibilities can produce
+ungainly designs that are hard to understand.
+
+*Factories are used to encapsulate the
+knowledge necessary for object creation, and they are especially
+useful to create Aggregates. When the root of the Aggregate is
+created, all the objects contained by the Aggregate are created
+along with it, and all the invariants are enforced.*
+---
+
+It is important for the creation process to be atomic. If it is not,
+there is a chance for the creation process to be half done for
+some objects, leaving them in an undefined state. This is even
+more true for Aggregates.
+
+*We won't try to present the patterns
+from a design perspective, but from a domain modeling one.*
+
+When creating a Factory, we are forced to violate an object's
+encapsulation, which must be done carefully. Whenever
+something changes in the object that has an impact on
+construction rules or on some of the invariants, we need to make
+sure the Factory is updated to support the new condition.
+
+Entity Factories and Value Object Factories are different. Values
+are usually immutable objects, and all the necessary attributes
+need to be produced at the time of creation. When the object is
+created, it has to be valid and final.
+
+**There are times when a Factory is not needed, and a simple
+constructor is enough. Use a constructor when:**
+
+1. The construction is not complicated.
+2. The creation of an object does not involve the
+creation of others, and all the attributes needed are
+passed via the constructor.
+1. The client is interested in the implementation,
+perhaps wants to choose the Strategy used.
+1. The class is the type. There is no hierarchy involved,
+so no need to choose between a list of concrete
+implementations.
+
+Another observation is that Factories need to create new objects
+from scratch, or they are required to reconstitute objects which
+previously existed, but have been probably persisted to a
+database.
+
+> **Bringing Entities back into memory from their resting
+place in a database involves a completely different process than
+creating a new one.**
+
+One obvious difference is that the new
+object does not need a new identity.
+
+## 7. Repositories
+
+In a model-driven design, objects have a life cycle starting with
+creation and ending with deletion or archiving. A constructor or
+a Factory takes care of object creation.
+
+In an object-oriented language,
+one must hold a reference to an object in order to be able to use
+it. To have such a reference, the client must either create the
+object or obtain it from another, by traversing an existing
+association.
+
+Using such a rule in the design
+will force the objects to hold on a series of references they
+probably wouldn't keep otherwise. This increases coupling,
+creating a series of associations which are not really needed.
+
+One way to solve this is fetch the references from database.
+
+When a client wants to use an object, it accesses the database,
+retrieves the object from it and uses it. This seems like a quick
+and simple solution, but it has negative impacts on the design.
+
+> **A poor solution is for
+the client to be aware of the details needed to access a database.
+For example, the client has to create SQL queries to retrieve the
+desired data.**
+
+What happens if a decision is made to change the
+underlying database? All that scattered code needs to be changed
+to be able to access the new storage. When client code accesses a
+database directly, it is possible that it will restore an object
+internal to an Aggregate. This breaks the encapsulation of the
+Aggregate with unknown consequences.
+
+*Therefore, use a Repository, the purpose of which is to
+encapsulate all the logic needed to obtain object references. The
+domain objects won't have to deal with the infrastructure to get
+the needed references to other objects of the domain. They will
+just get them from the Repository and the model is regaining its
+clarity and focus.*
+---
+
+The Repository may store references to some of the objects.
+When an object is created, it may be saved in the Repository,
+and retrieved from there to be used later. If the client requested
+an object from the Repository, and the Repository does not have
+it, it may get it from the storage. Either way, the Repository acts
+as a storage place for globally accessible objects.
+
+The Repository may also include a Strategy. It may access one
+persistence storage or another based on the specified Strategy. It may use different storage locations for different type of objects.
+
+There is a relationship between Factory and Repository. They
+are both patterns of the model-driven design, and they both help
+us to manage the life cycle of domain objects. While the Factory
+is concerned with the creation of objects, the Repository takes
+care of already existing objects. The Repository may cache
+objects locally.
+
+Objects are either created using a constructor
+or they are passed to a Factory to be constructed. For this reason,
+the Repository may be seen as a Factory, because it creates objects.
+
+> **The Factory should create new objects, while the
+Repository should find already created objects.**
 
