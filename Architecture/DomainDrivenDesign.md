@@ -644,4 +644,3 @@ However, breaking down the system into ever-smaller contexts
 eventually loses a valuable level of integration and coherency.
 
 ## Anticorruption Layer
-
