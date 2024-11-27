@@ -570,3 +570,78 @@ the Repository may be seen as a Factory, because it creates objects.
 > **The Factory should create new objects, while the
 Repository should find already created objects.**
 
+# IV. Continuous Refactoring
+
+*Refactoring is the process of redesigning the code
+to make it better without changing application behavior.*
+---
+
+Refactoring is usually done in small, controllable steps, with
+great care so we don't break functionality or introduce some
+bugs.
+
+Automated tests are of great help to ensure that
+we haven't broken anything.
+
+There are many ways to do code refactoring. There are even
+refactoring patterns. Such patterns represent an automated
+approach to refactoring.
+
+Technical refactoring, the one based on patterns, can be
+organized and structured.
+
+One of the first things we are taught about modeling is to read
+the business specifications and look for nouns and verbs. The
+nouns are converted to classes, while the verbs become methods.
+This is a simplification, and will lead to a shallow model. All
+models are lacking depth in the beginning, but we should
+refactor the model toward deeper and deeper insight.
+
+# V. Preserving Model Integrity
+
+A unified enterprise model is an ideal which is not easily
+accomplished, and sometimes it is not even worth trying it. Such
+projects need the combined effort of many teams. The teams
+need a large degree of independence in the development process,
+because they do not have the time to constantly meet and discuss
+the design. The coordination of such teams is a daunting task.
+They might belong to different departments and have separate
+management. When the design of the model evolves partially
+independently, we are facing the possibility to lose model
+integrity. Preserving the model integrity by striving to maintain
+one large unified model for the entire enterprise project is not
+going to work.
+
+Instead of trying to keep
+one big model that will fall apart later, we should consciously
+divide it into several models. Several models well integrated can
+evolve independently as long as they obey the contract they are
+bound to. Each model should have a clearly delimited border,
+and the relationships between models should be defined with
+precision.
+
+![DDD multiple models](Images/DDD2.png)
+
+## Bounded Context
+
+There is no formula to divide one large model into smaller ones.
+Try to put in a model those elements which are related, and
+which form a natural concept. A model should be small enough
+to be assigned to one team.
+
+Explicitly set boundaries in terms of team
+organization, usage within specific parts of the application, and
+physical manifestations such as code bases and database
+schemas. Keep the model strictly consistent within these bounds,
+but don't be distracted or confused by issues outside.
+
+A Bounded Context is not a Module. A Bounded Context
+provides the logical frame inside of which the model evolves.
+Modules are used to organize the elements of a model, so
+Bounded Context encompasses the Module.
+
+However, breaking down the system into ever-smaller contexts
+eventually loses a valuable level of integration and coherency.
+
+## Anticorruption Layer
+
