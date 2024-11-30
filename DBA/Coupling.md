@@ -72,3 +72,12 @@ You can subscribe to the events that indicate data updates from other services, 
 
 This approach reduces coupling, runtime dependency, improve latency and makes system more scalable and reliable. Even if external source of data is inaccessible, you still have this data replicated in your own database. But keep in mind that cached data can be stale.
 
+## Event-driven architecture
+
+Event-driven architecture is a design pattern for software applications that emphasizes the production, detection, and consumption of events as a core mechanism for communication and coordination. In an event-driven architecture, events are used to represent significant changes or actions that occur within the system, and are used to trigger functions or processes that react to those events.
+
+In an event-driven architecture, events are typically represented as messages or notifications that are sent by one component of the system to another. These messages can be sent asynchronously, allowing the components of the system to operate independently and in parallel. When a component receives an event message, it can trigger a response or action, such as updating its internal state, performing an operation, or sending another event message.
+
+An event is a broadcast by a software system about something which has happened within its boundary. For example, when the system successfully create an order, it can publish an ORDER_CREATED event.
+
+Event-driven architecture is a flexible and scalable approach to building software applications, and can enable applications to respond quickly and efficiently to changes or actions within the system. It is often used in distributed systems, microservices architectures, and real-time applications, where it can provide a powerful and efficient mechanism for communication and coordination.
