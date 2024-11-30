@@ -81,3 +81,16 @@ In an event-driven architecture, events are typically represented as messages or
 An event is a broadcast by a software system about something which has happened within its boundary. For example, when the system successfully create an order, it can publish an ORDER_CREATED event.
 
 Event-driven architecture is a flexible and scalable approach to building software applications, and can enable applications to respond quickly and efficiently to changes or actions within the system. It is often used in distributed systems, microservices architectures, and real-time applications, where it can provide a powerful and efficient mechanism for communication and coordination.
+
+### Event-driven end-to-end
+
+In typical web pages, when you load a page and data on the server changes afterwards, the browser does not know about this change until you reload the page. The state displayed on a page is stale cache that is not updated until you explicitly poll or query for changes.
+
+More recent protocols have moved beyond simple request/response pattern. WebSockets provide communication channels which allow your browser to establish a TCP connection to your server. Your server can push messages to your browser as long as it remains connected. This provides an ability for the server to actively inform end-users about any state changes on the server.
+
+Recent tools for developing client applications, like React, Redux, Flux etc. already manage client-side state by subscribing to a stream of changes that represent responses from a server. It would be very natural to extend this model to also allow server to push state-changing events to a client. This way changes and events could flow end-to-end, from the interaction of one device that triggers an event, to the server and event bus, to processing this event, storing it in a database, and back to the UI client that is observing the state changes on another device.
+
+The idea of subscribing for changes instead of querying opens a bunch of new possibilities for more responsive user interfaces. It is already used in some places, like online games or messaging apps.
+
+For typical data centric or CRUD services there may be not a lot of benefit designing an entire application using this approach, but some parts of your application can definitely benefit from it.
+
