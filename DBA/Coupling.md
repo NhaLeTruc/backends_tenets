@@ -57,3 +57,9 @@ Try not to share business data between components. Otherwise you may end up with
 - Some data, lets say email address, can be needed in multiple services, for example authentication service (to login your user) and a marketing service (to send marketing emails). In those cases you may need to duplicate emails between those services. Duplication is better than calling one service from another, but keep in mind that when updating email you'll need to guarantee tis update in both services. We discuss this further in a section below.
 
 Your components must be independently deployable. In a microservices world, if deploying one microservice you have to change other microservices this means you have a tightly coupled architecture.
+
+## Shared-nothing architecture
+
+Shared-Nothing Architecture is a distributed computing architecture that consists of multiple separated nodes that don’t share resources.
+
+This architecture reduces coupling, scales better, simplifies upgrades preventing downtime, eliminates single points of failure, allowing the overall system to continue operating despite failures in individual nodes, etc.
