@@ -63,3 +63,12 @@ Your components must be independently deployable. In a microservices world, if d
 Shared-Nothing Architecture is a distributed computing architecture that consists of multiple separated nodes that don’t share resources.
 
 This architecture reduces coupling, scales better, simplifies upgrades preventing downtime, eliminates single points of failure, allowing the overall system to continue operating despite failures in individual nodes, etc.
+
+## Selective data replication
+
+Selective data replication is creating a copy of the data needed from other remote system (external API, microservice, etc.) into the database of our system, essentially creating a cache of that data that is always available.
+
+You can subscribe to the events that indicate data updates from other services, for example, subscribe to ProductPriceUpdatedEvent and update your local cache when the price changes. Alternatively, if events are not available, you can query an external service periodically to update your cache.
+
+This approach reduces coupling, runtime dependency, improve latency and makes system more scalable and reliable. Even if external source of data is inaccessible, you still have this data replicated in your own database. But keep in mind that cached data can be stale.
+
