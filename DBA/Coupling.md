@@ -94,3 +94,15 @@ The idea of subscribing for changes instead of querying opens a bunch of new pos
 
 For typical data centric or CRUD services there may be not a lot of benefit designing an entire application using this approach, but some parts of your application can definitely benefit from it.
 
+### Designing around dataflow
+
+Some microservices example:
+
+- In regular approach, when purchasing a product, your microservice can query an exchange rate service to get currency exchange rate.
+- In a dataflow approach, the code that processes purchases would subscribe to a stream of exchange rate updates ahead of time and record the current rate in a local database whenever it changes. When processing a purchase it only needs to query its local database (Selective data replication).
+
+Same as changing a single number in a spreadsheet column will change the output of a formula that depends on this value.
+
+Subscribing to a stream of changes, rather than querying the current state when needed, brings up closer to a spredsheet-like model of computation: when some piece of data changes, any derived data that depends on it can swiftly be updated. - Martin Kleppman
+
+By combining techniques like Event-driven Architecture and Selective Data Replication we can achieve interesting results.
