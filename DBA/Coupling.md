@@ -106,3 +106,14 @@ Same as changing a single number in a spreadsheet column will change the output 
 Subscribing to a stream of changes, rather than querying the current state when needed, brings up closer to a spredsheet-like model of computation: when some piece of data changes, any derived data that depends on it can swiftly be updated. - Martin Kleppman
 
 By combining techniques like Event-driven Architecture and Selective Data Replication we can achieve interesting results.
+
+## Consistency
+
+Distributed systems are made up of parts which interact relatively slowly and unreliably. Asynchronous networks can duplicate data, drop packets, reorder messages, have delays, etc. Data can be spread across multiple data stores so managing and maintaining consistency in this environment is an important aspect of the system.
+
+Weak consistency - After a write, there is no guarantee that reads will see it. Works well in real time use cases such as voice or video chat, and realtime multiplayer games, etc.
+Strong consistency - After a write, there is a guarantee that reads will se it. Data is replicated synchronously, usually using some kind of transaction.
+Eventual consistency - After a write, readers will eventually see written data (usually within seconds) and data is replicated asynchronously. Eventual consistency works best for distributed systems at a large scale.
+Familiarize with Fallacies of distributed computing before implementing any kind of distributed system. Added complexities may not be worth it.
+
+Below we will discuss where and why we need consistency, how to achieve it and some associated problems.
