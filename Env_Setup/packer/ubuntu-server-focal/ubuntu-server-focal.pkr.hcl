@@ -57,10 +57,10 @@ source "proxmox" "ubuntu-server-focal" {
     }
 
     # VM CPU Settings
-    cores = "1"
+    cores = "2"
     
     # VM Memory Settings
-    memory = "2048" 
+    memory = "4096" 
 
     # VM Network Settings
     network_adapters {

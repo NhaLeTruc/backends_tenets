@@ -3,11 +3,11 @@ autoinstall:
   version: 1
   locale: en_US
   keyboard:
-    layout: de
+    layout: en
   ssh:
     install-server: true
     allow-pw: true
-    disable_root: true
+    disable_root: false
     ssh_quiet_keygen: true
     allow_public_ssh_keys: true
   packages:
@@ -20,14 +20,14 @@ autoinstall:
       size: 0
   user-data:
     package_upgrade: false
-    timezone: Europe/Berlin
+    timezone: Asia/Bangkok
     users:
-      - name: your-user-name
+      - name: bobAdmin
         groups: [adm, sudo]
         lock-passwd: false
         sudo: ALL=(ALL) NOPASSWD:ALL
         shell: /bin/bash
-        # passwd: your-password
+        passwd: bobAdmin123
         # - or -
         # ssh_authorized_keys:
         #   - your-ssh-key

@@ -20,19 +20,19 @@
 ```bash
 ssh-keygen -t ed25519 -C "your_email@example.com"
 
-wget https://cloud-images.ubuntu.com/minimal/releases/jammy/release/ubuntu-22.04-minimal-cloudimg-amd64.img
+wget https://cloud-images.ubuntu.com/jammy/current/jammy-server-cloudimg-amd64.img
 
 # Add a serial console to the reference VM
 qm set <VM ID> --serial0 socket --vga serial0
 
 # Change the file extension of the image to .qcow2
-mv ubuntu-22.04-minimal-cloudimg-amd64.img ubuntu-22.04.qcow2
+mv jammy-server-cloudimg-amd64.img jammy-server-cloudimg-amd64.qcow2
 
 # Resize the downloaded cloud image
-qemu-img resize ubuntu-22.04.qcow2 32G
+qemu-img resize jammy-server-cloudimg-amd64.qcow2 32G
 
 # Import the cloud image into Proxmox
-qm importdisk <VM ID> ubuntu-22.04.qcow2 local-lvm
+qm importdisk <VM ID> jammy-server-cloudimg-amd64.qcow2 local --format=qcow2
 
 ```
 
