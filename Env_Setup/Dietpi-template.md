@@ -9,6 +9,7 @@
 5. Memoery - 4096MB
 6. Create VM.
 7. Choose newly created VM. Detach disk.
+8. Choose Cloudinit. Add and config username/password/network.
 
 ## Config in VM console
 
@@ -28,3 +29,8 @@
 qm importdisk "$VMID" DietPi_Proxmox-x86_64-Bookworm.qcow2 local-lvm --format=qcow2
 ```
 
+## Manual modifications
+
+1. Hardware: add newly imported disk.
+2. Options: Boot Order: enable and move new disk to top of boot order.
+3. Do not start VM. Convert to template.
