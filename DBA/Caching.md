@@ -30,4 +30,3 @@ CDNs work by storing copies of content at multiple locations around the world, a
 A CDN allows for the quick transfer of assets needed for loading Internet content including HTML pages, javascript files, stylesheets, images, and videos.
 
 CDN can increase content availability, redundancy, improve website load times.
-
