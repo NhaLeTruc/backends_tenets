@@ -149,7 +149,3 @@ If you want to make sure that data can never be lost, you have to switch to
 synchronous replication. As you have already seen in this chapter, a synchronous
 transaction is synchronous because it will be valid only if it commits to at least
 two servers.
-
-## Using sharding and data distribution
-
-
