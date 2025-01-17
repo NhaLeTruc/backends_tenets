@@ -114,3 +114,95 @@ The pg_logical directory, information for logical decoding is stored (snapshots 
 
 The multiple-transaction-log manager handles shared row locks efficiently. There are no replication-related practical implications of this directory
 
+## pg_notify – LISTEN/NOTIFY data
+
+In the pg_notify directory, the system stores information about LISTEN/NOTIFY (the async backend interface)
+
+## pg_replslot – replication slots
+
+Information about replication slots is stored in the pg_replslot directory.
+
+## pg_serial – information about committed serializable transactions
+
+Information about serializable transactions is stored in pg_serial directory. We
+need to store information about commits of serializable transactions on the disk
+to ensure that long-running transactions will not bloat the memory. A simple
+Segmented Least Recently Used (SLRU) structure is used internally to keep
+track of these transactions.
+
+## pg_snapshot – exported snapshots
+
+The pg_snapshot file consists of information needed by the PostgreSQL
+snapshot manager. In some cases, snapshots have to be exported to the disk to
+avoid going to the memory. After a crash, these exported snapshots will be
+cleaned out automatically.
+
+## pg_stat – permanent statistics
+
+The pg_stat file contains permanent statistics for the statistics subsystem.
+
+## pg_stat_tmp – temporary statistics data
+
+Temporary statistical data is stored in the pg_stst_tmp file. This information is needed for most pg_stat_* system views.
+
+## pg_subtrans – subtransaction data
+
+In this directory, we store information about subtransactions. The pg_subtrans (and pg_clog) directories are a permanent (on-disk) storage of transactionrelated information. There are a limited number of pages of directories kept in the memory, so in many cases, there is no need to actually read from the disk.
+
+However, if there's a long-running transaction or a backend sitting idle with an open transaction, it may be necessary to be able to read and write this information to the disk. These directories also allow the information to be permanent across server restarts.
+
+## pg_tblspc – symbolic links to tablespaces
+
+The pg_tblspc directory is a highly important directory. In PostgreSQL, a tablespace is simply an alternative storage location that is represented by a directory holding the data.
+
+The important thing here is that if a database instance is fully replicated, we
+simply cannot rely on the fact that all the servers in the cluster use the same disk
+layout and the same storage hardware. There can easily be scenarios in which a
+master needs a lot more I/O power than a slave, which might just be around to
+function as backup or standby. To allow users to handle different disk layouts,
+PostgreSQL will place symlinks in the pg_tblspc directory. The database will
+blindly follow those symlinks to find the tablespaces, regardless of where they
+are.
+
+> We recommend using the trickery outlined in this section only when it is really
+needed. For most setups, it is absolutely recommended to use the same
+filesystem layout on the master as well as on the slave. This can greatly reduce
+the complexity of backups and replay. Having just one tablespace reduces the
+workload on the administrator.
+
+## pg_twophase – information about prepared statements
+
+PostgreSQL has to store information about twophase commit. While twophase
+commit can be an important feature, the directory itself will be of little
+importance to the average system administrator.
+
+## pg_xlog – the PostgreSQL transaction log (WAL)
+
+The pg_xlog log contains all the files related to the so-called
+XLOG. If you have used PostgreSQL in the past, you might be familiar with the
+term Write-Ahead Log (WAL). XLOG and WAL are two names for the same
+thing. The same applies to the term transaction log.
+
+The log is a bunch of files that are always exactly 16 MB in size (the
+default setting). The filename of an XLOG file is generally 24 bytes long. The
+numbering is always hexadecimal. So, the system will count "… 9, A, B, C, D,
+E, F, 10" and so on.
+
+One important thing to mention is that the size of the pg_xlog directory will not
+vary wildly over time, and it is totally independent of the type of transactions
+you are running on your system. The size of the XLOG is determined by the
+postgresql.conf parameters.
+
+## postgresql.conf – the central PostgreSQL configuration file
+
+the main PostgreSQL configuration file. All configuration
+parameters can be changed in postgresql.conf.
+
+> If you happen to use prebuilt binaries, you might not find postgresql.conf
+directly inside your data directory. It is more likely to be located in some
+subdirectory of etc (on Linux/Unix) or in your place of choice in Windows. The
+precise location is highly dependent on the type of operating system you are
+using. The typical location of data directories is varlib/pgsql/data, but
+postgresql.conf is often located under
+etcpostgresql/9.X/main/postgresql.conf (as in Ubuntu and similar
+systems), or under /etc directly.
