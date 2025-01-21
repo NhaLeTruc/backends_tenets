@@ -230,4 +230,3 @@ fsync_writethrough, and open_sync.
 > If you want to change these values, we highly recommend checking out the
 manual pages of the operating system you are using to make sure that you have
 made the right choice.
-
