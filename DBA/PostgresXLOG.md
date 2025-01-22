@@ -226,5 +226,3 @@ around before writing it to the disk.
 was unreasonably low for modern machines. If you are running an old version,
 consider increasing wal_buffers to 16 MB. This is usually a good value for
 reasonably sized database instances.
-
-
