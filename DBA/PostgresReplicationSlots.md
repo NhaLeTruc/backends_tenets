@@ -104,6 +104,8 @@ amount of transaction log created during the UPDATE command. In general, the
 goal of the transaction log is to allow the server to repair itself. If replication
 slots are used, it is necessary to know a bit more about the change.
 
+> Postgres tables require a replica identity to be configured in order to capture the changes made to the table. Replica identity specifies the type of information written to the write-ahead log with respect to what the previous values were.
+
 ```SQL
 ALTER TABLE t_test REPLICA IDENTITY FULL;
 ```
@@ -116,5 +118,3 @@ At this point, PostgreSQL provides four different levels of REPLICA IDENTITY:
 - USING INDEX: This index records the old values of the columns covered by the named index, which must be unique, not partial, and not deferrable, and must include only columns marked as NOT NULL.
 - FULL: This records the old values of all the columns in the row.
 - NOTHING: This records no information about the old row.
-
-
