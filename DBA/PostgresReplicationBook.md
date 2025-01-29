@@ -105,3 +105,30 @@ availability, durability, performance, and cost.
 ### Setting up a simple HA cluster
 
 Instruction in [Guide](file:///D:/MyFile/_PDF/DBA/PostgreSQL%20Replication%20(%20PDFDrive%20).pdf) page 225 - 248.
+
+## Chapter 8: Working with PgBouncer
+
+The basic idea of PgBouncer is to save connection-related costs.
+When a user creates a new database connection, it usually means burning a
+couple of hundred kilobytes of memory. This consists of approximately 20 KB
+of shared memory and the amount of memory used by the process serving the
+connection itself. While the memory consumption itself might not be a problem,
+the actual creation process of the connection can be comparatively time
+consuming.
+
+PgBouncer solves this problem by placing itself between the actual database
+server and the heavily used application. To the application, PgBouncer looks just
+like a PostgreSQL server. Internally, PgBouncer will simply keep an array of
+open connections and pool them. Whenever a connection is requested by the
+application, PgBouncer will take the request and assign a pooled connection. In
+short, it is some sort of proxy.
+
+## Chapter 9: Working with pgpool
+
+The idea behind pgpool is to bundle connection pooling with some additional functionality to  improve replication, load balancing.
+
+The pgpool tool is one that has been widely adopted for replication and failover.
+It offers a vast variety of features including load balancing, connection pooling,
+and replication. The pgpool tool will replicate data on the statement level and
+integrate itself with PostgreSQL onboard tools such as streaming replication.
+
