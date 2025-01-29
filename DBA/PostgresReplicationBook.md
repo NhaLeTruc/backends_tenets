@@ -73,4 +73,35 @@ It is important to mention that certain checks that are not related to PostgreSQ
 
 ## Chapter 7. Understanding Linux High Availability
 
+### Measuring availability
 
+The idea behind availability is that the service provider tries to guarantee a certain level of it, and clients can then expect that or more.
+
+> The quality of availability is measured in fraction of percentages, for example,
+99.99 percent or 99.999 percent, which are referred to as "four nines" and "five
+nines" respectively. These values are considered pretty good availability values,
+but there is a small trick in computing this value. If the provider has a planned
+downtime that is announced in advance; for example, the annual or bi-annual
+maintenance for water pipes in a town doesn't make the availability number
+worse, then availability is only measured outside the planned maintenance
+window.
+
+### Durability and availability
+
+When designing data storage systems, it is important to distinguish between the
+properties of availability and durability. Availability is a measure of the
+probability that the system is able to accept reads and writes at any given point
+in time. Durability is a measure of the probability that once a write has been
+accepted (in PostgreSQL, this means a successful transaction commit), that
+information will not be lost. All real systems must pick a compromise between
+availability, durability, performance, and cost.
+
+> It is extremely important to avoid situations where more than one database instance could be accepting writes from your application. Your data will end up in two places, and you will not be able to merge the two databases back together without a large data recovery effort. In effect, this causes you to lose data, so you fail on your durability guarantees.
+---
+> This situation is called a split-brain, and all cluster management systems must have ways to avoid it. The tools used to avoid split-brain are called **quorum and fencing**.
+
+**Pacemaker High Availability stack** is the central tool for Linux-HA.
+
+### Setting up a simple HA cluster
+
+Instruction in [Guide](file:///D:/MyFile/_PDF/DBA/PostgreSQL%20Replication%20(%20PDFDrive%20).pdf) page 225 - 248.
