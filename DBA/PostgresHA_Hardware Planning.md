@@ -67,3 +67,54 @@ and the most commonly used for OLTP systems.
 ---
 > The solid line shows that the data is spread across all six drives. The dotted line is the parity information. If a drive fails and the block can't be read directly from the necessary location, a RAID 5 will use the remaining parity information from all drives to reconstruct the missing data. The only real difference between a RAID 5 and a RAID 6 is that a RAID 6 contains a second parity line, so up to two drives can fail before the array begins operating in a degraded manner.
 
+### Nimble Networking
+
+The network card enables the database server to exchange data with the outside world. This
+includes far more than web servers, spreadsheets, loading jobs, application servers, and
+other data consumers. The database server is part of a large continuum of activity, much of
+which will center around maintenance, management, and even filesystem availability.
+
+What's more, network bandwidth can easily be saturated by an aggressive backup strategy,
+which is something critical to a highly-available database. For PostgreSQL systems utilizing
+streaming replication or WAL archival, that traffic contributes quite a bit of bandwidth to
+the overall picture. If our backups are delayed, or replicas sit idle waiting for network
+packets, our exposure to risk is high indeed.
+
+If we have an existing PostgreSQL setup, follow these steps:
+
+Execute the following query to determine the number of existing replicas:
+
+```SQL
+SELECT count(1)+1 AS streams FROM pg_stat_replication;
+```
+
+Multiply streams by 160 for maximum MB/s needed by replication streams.
+
+Execute the following queries together in a psql connection during a busy time of day on a production database:
+
+```SQL
+SELECT SUM(pg_stat_get_db_tuples_fetched(oid)) AS count1
+ FROM pg_database;
+SELECT pg_sleep(1);
+SELECT SUM(pg_stat_get_db_tuples_fetched(oid)) AS count2
+ FROM pg_database;
+```
+
+Subtract the results of count1 from count2 for the number of rows fetched from the database per second.
+
+Divide the number of rows per second by 10,000 for MB/s used by PostgreSQL connections.
+
+Add MB/s for streams to MB/s for connections.
+
+Without an existing database, follow these steps for some basic bandwidth numbers:
+
+1. Multiply the desired number of PostgreSQL replicas by 160 for the maximum MB/s needed by replication streams.
+2. Assume one WAL stream for an offsite disaster recovery database copy.
+3. Start with at least one live hot streaming standby copy.
+4. Include any additional database mirrors.
+5. Estimate the active client count as discussed in the Picking a Processor recipe.
+6. Multiply the active client count estimate by 5 for MB/s used by PostgreSQL connections.
+7. Add MB/s for streams to MB/s for connections.
+
+This chapter is worth revisiting for these bits of wisdom.
+
