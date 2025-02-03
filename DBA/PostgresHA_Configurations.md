@@ -102,4 +102,3 @@ setting is managed:
  WHERE context != 'internal'
  ORDER BY when_changed;
 ```
-
