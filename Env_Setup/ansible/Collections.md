@@ -2,6 +2,8 @@
 
 An Ansible collection is a distribution format that bundles together Ansible content such as playbooks, roles, modules, and plugins into a single package. It provides a way to organize and share Ansible content in a modular and versioned manner. Collections are designed to make it easier to manage and share reusable automation content across different projects, teams, and organizations.
 
+A typical collection addresses a set of related use cases. For example, the cisco.ios collection automates management of Cisco IOS devices. You can create a collection and publish it to Ansible Galaxy or to a private Automation Hub instance. You can publish certified collections to the Red Hat Automation Hub, part of the Red Hat Ansible Automation Platform.
+
 In the context of Ansible, here are some key points about collections:
 
 - **Modularity**: Collections allow you to organize Ansible content into logical units. This makes it easier to manage and share specific components of automation, like roles, modules, and plugins.
