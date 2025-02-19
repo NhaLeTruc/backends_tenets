@@ -150,11 +150,10 @@ Let’s view the generated inventory with the command:
 ansible-inventory -i dynamic_inventory_aws_ec2.yml --graph
 ```
 
-The plugin fetches information from our AWS account and creates several groups according to our configuration and options. 
+The plugin fetches information from our AWS account and creates several groups according to our configuration and options.
 
 To persist the inventory to a file, you can use this command:
 
 ```bash
 ansible-inventory -i dynamic_inventory_aws_ec2.yml --list --output inventory/dynamic_inventory_aws_ec2 -y
 ```
-
