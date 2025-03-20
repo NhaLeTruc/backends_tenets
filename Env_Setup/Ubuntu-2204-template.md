@@ -43,7 +43,12 @@ qemu-img resize jammy-server-cloudimg-amd64.qcow2 32G
 # Import the cloud image into Proxmox
 qm importdisk $VMID jammy-server-cloudimg-amd64.qcow2 local --format=qcow2
 
-sudo apt install qemu-guest-agent
+sudo apt update && apt -y install qemu-guest-agent
+
+systemctl enable qemu-guest-agent
+systemctl start qemu-guest-agent
+
+systemctl status qemu-guest-agent
 
 sudo nano /etc/ssh/sshd_config.d/60-cloudimg-settings.conf
 
