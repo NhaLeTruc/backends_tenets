@@ -17,7 +17,7 @@
 7. Stay in **Hardware** and add one **CloudInit Drive**. Choose lvm-thin storage type.
 8. Config VM login **username** and **password** in CloudInit tab.
 9. Go to **Options** tab. Edit **Boot Order** to include new VM's Hard Disk. Move new disk to top in boot order.
-10. Convert VM to template. DO NOT START.
+10. DO NOT START. Convert VM to template.
 11. Start full cloning.
 12. Login into new VM instance and:
     1. sudo apt install qemu-guest-agent
