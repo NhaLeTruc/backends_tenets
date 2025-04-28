@@ -68,7 +68,7 @@ The most common tools that are used to perform stored procedures testing are LIN
 
 ---
 
-## Functional Testing
+## Functional Testing (Doing the right things)
 
 Functional testing is performed keeping in mind an end-user point of view; whether the required transactions and operations run by the end-users meet the business specifications.
 
@@ -98,9 +98,13 @@ Coding errors can be detected in white-box testing, so internal bugs in the data
 
 ---
 
-## Nonfunctional Testing
+## Nonfunctional Testing (Doing things right)
 
 Nonfunctional testing involves performing load testing, stress testing, checking minimum system requirements to meet business specification, risk finding and performance optimization of database.
+
+### Performance Testing vs Load Testing
+
+Performance testing is a broad category that evaluates how a system performs under various conditions, including its speed, scalability, and stability. Load testing, on the other hand, is a specific type of performance testing that focuses on simulating real-world user loads to assess how the system handles expected or peak load. Thus load testing is a subset of Performance testing, which is a techinical term for testing suites. Unlike functional and non-functional which defined by user's requirements thus is more of a business term.
 
 ### Load Testing
 
@@ -120,5 +124,3 @@ Examples of load testing in different testing types:
 Stress testing is performed to identify the system breakpoint. In this testing, application is loaded in such a way that the system fails at one point. This point is called the breakpoint of database system.
 
 Determining the state of database transactions involves a significant amount of effort. Proper planning is required to avoid any time and cost-based issues.
-
-
