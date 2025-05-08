@@ -41,3 +41,43 @@ Monitoring and implementing the node rejoin during a split brain scenario can be
 ## References
 
 1. [Postgres High Availability using only Repmgr](https://www.enterprisedb.com/blog/how-to-achieve-high-availability-using-virtual-ips)
+
+## Options for Highly Available Topology
+
+You can set up an HA cluster:
+
+1. With stacked control plane nodes, where etcd nodes are colocated with control plane nodes.
+2. With external etcd nodes, where etcd runs on separate nodes from the control plane.
+
+### Stacked etcd topology
+
+A stacked HA cluster is a topology where the distributed data storage cluster provided by etcd is stacked on top of the cluster formed by the nodes that run control plane components.
+
+This topology couples the control planes and etcd members on the same nodes. It is simpler to set up than a cluster with external etcd nodes, and simpler to manage for replication.
+
+However, a stacked cluster runs the risk of failed coupling. If one node goes down, both an etcd member and a control plane instance are lost, and redundancy is compromised. You can mitigate this risk by adding more control plane nodes.
+
+You should therefore run a minimum of three stacked control plane nodes for an HA cluster.
+
+### External etcd topology
+
+An HA cluster with external etcd is a topology where the distributed data storage cluster provided by etcd is external to the cluster formed by the nodes that run control plane components.
+
+This topology decouples the control plane and etcd member. It therefore provides an HA setup where losing a control plane instance or an etcd member has less impact and does not affect the cluster redundancy as much as the stacked HA topology.
+
+However, this topology requires twice the number of hosts as the stacked HA topology. A minimum of three hosts for control plane nodes and three hosts for etcd nodes are required for an HA cluster with this topology.
+
+![](images/external_etcd_ha.png)
+
+> NOTE: Theoretically, there is no hard limit. However, an etcd cluster probably should have no more than seven nodes. A 5-member etcd cluster can tolerate two member failures, which is enough in most cases. The larger clusters provide better fault tolerance, BUT write performance will suffer because data must be replicated across more machines.
+
+It is possible to do so for small clusters (3 to 5 (or even 7) nodes) before the chattiness of the etcd quorum process becomes a problem.
+
+Etcd clusters also need highly performant storage, so it may be better to provide specialised resources to the etcd nodes while the regular control plane nodes have less optimised (and probably cheaper) resources.
+
+From the operations point of view, removing the etcd component from the control plane nodes will make them stateless (as far as I know), so they would be easier to maintain.
+
+### References II
+
+1. [etcd FAQ](https://etcd.io/docs/v3.3/faq/#what-is-maximum-cluster-size)
+2. [Colocated or Separated etcd cluster](https://discuss.kubernetes.io/t/why-should-i-separate-control-plane-instances-from-etcd-instances/17706/2)
