@@ -1,56 +1,21 @@
 # Key mechanisms for High Availability
 
-## HAProxy & pgbouncer vs pgpoolII
-
-PgPoolII is a generalist software which try to provide features of both a proxy and a connection pooler. Because of this it doesn't do anything too well.
-
-PgBouncer is a simple lightweight specialist which provide only connection pooling, but it does that very well.
-
-HAProxy is a specialized proxy, and it performs proxy tasks better than PgPoolII on the same hardware. Given that PgBouncer is so lightweight, it should be colocated on the same servers as the control panes and worker nodes. Thus on the same hardwares, HAProxy + PgBouncer would most likely outperforms PgPoolII in load balancing and connection pooling.
-
-PgPoolII therefore is best use in case which strict control over connection requests has been obtained. So that PgPoolII would receive only optimal amount of requests for its server hardwares e.g. test environments. Since it is simpler to setup and configure relative to HAProxy + PgBouncer.
-
-However PgPoolII could perform query routing (write/read splitting) out of the box. A feature lacking in both HAProxy (possible with complex configurations) and Pgbouncer (can't do at all).
-
-HAProxy and PgPool-II have different primary functions, so HAProxy cannot directly replace PgPool-II. HAProxy is a load balancer, primarily used for distributing network traffic, while PgPool-II is a connection pooler and load balancer specifically for PostgreSQL databases. While HAProxy can be used in conjunction with PgPool-II to enhance overall system performance and availability, it does not offer the same level of PostgreSQL-specific features as PgPool-II, such as connection pooling and query caching.
-
-HAProxy can be used to distribute traffic to PgPool-II instances, which then handle the database-specific load balancing and connection pooling. HAProxy does not offer the same database-level features as PgPool-II, like query caching or automatic failover for PostgreSQL servers.
-
-While HAProxy and PgPool-II can be used together, they serve different purposes. HAProxy manages network traffic, while PgPool-II manages PostgreSQL-specific connections and load balancing. HAProxy is not a direct replacement for PgPool-II because it lacks the PostgreSQL-specific functionalities.
-
-> In Summary
-
-+ For simple connection pooling and load balancing with a focus on simplicity and performance, PgBouncer is often a good choice.
-+ For more complex scenarios involving multiple servers, failover, and advanced features, PgPool-II can be a better fit.
-+ HAProxy is primarily used for load balancing and can be used in conjunction with connection poolers like PgBouncer or PgPool-II to achieve high availability and load distribution across multiple database servers. 
-
-### HAProxy
-
-HAProxy is an open source software widely used for load balancing and proxying TCP and HTTP-based applications, including PostgreSQL databases. It serves as an intermediary between clients and PostgreSQL servers, distributing incoming requests across multiple servers to prevent overload and ensure system reliability.
-
-HAProxy sits between PostgreSQL clients and servers, intelligently routing traffic based on server availability and health. Its real-time monitoring capabilities ensure that only fully operational servers handle database requests, significantly reducing the risk of downtime. When a server fails, HAProxy automatically redirects traffic to healthy nodes, making it a key player in PostgreSQL’s high availability architecture.
-
-Offers features like SSL termination, health checks, and detailed logging, ideal for web applications and high-traffic scenarios. Suitable for front-end web servers or application servers interacting with a database.
-
-> Key benefits
-
-+ Scalability: By distributing load among multiple servers, HAProxy ensures that the PostgreSQL system can handle an increased number of simultaneous connections and provide continual optimal performance as demand grows.
-+ Reliability: HAProxy offers robust failure management by redirecting traffic to standby servers if a primary instance goes down. This aids significantly in maintaining continuous database availability.
-+ Failover support: Automatic failover capabilities enable seamless transition to backup systems, minimizing downtime and impact on users during server failures or maintenance.
-
-### PGpool-II
-
-PGpool-II goes beyond basic load balancing by offering advanced features, such as connection pooling, query routing, and in-depth failover management. As a middleware solution, it is highly effective in optimizing resource use and managing multiple connections in large-scale PostgreSQL deployments. A PostgreSQL-specific connection pooler and load balancer.
-
-PGpool-II balances the load by distributing read queries across replica servers, while write queries are directed to the primary server. This helps improve performance, especially in read-heavy environments. PGpool-II can be configured to support synchronous and asynchronous replication setups, providing flexibility in how databases are managed.
-
-Manages connections, distributes load across multiple PostgreSQL servers, and provides query caching. Optimizes PostgreSQL resource utilization and reduces database load, especially in high-throughput environments.
-
-> Key benefits
-
-+ Connection pooling: PGpool-II reduces the overhead of establishing new connections by pooling existing connections. This allows the database to serve more clients simultaneously with reduced latency.Connection pooling: PGpool-II reduces the overhead of establishing new connections by pooling existing connections. This allows the database to serve more clients simultaneously with reduced latency.
-+ Query routing: It intelligently routes queries to appropriate servers, ensuring efficient use of resources. For instance, read queries can be sent to replica servers, while write operations are handled by the master.Query routing: It intelligently routes queries to appropriate servers, ensuring efficient use of resources. For instance, read queries can be sent to replica servers, while write operations are handled by the master.
-+ Failover management: Similar to HAProxy, PGpool-II provides failover capabilities. If a primary server goes down, it automatically promotes a standby server and reroutes traffic accordingly, ensuring business continuity.Failover management: Similar to HAProxy, PGpool-II provides failover capabilities. If a primary server goes down, it automatically promotes a standby server and reroutes traffic accordingly, ensuring business continuity.
+failover
+    Health Checking
+    Leader election (Raft)
+load-balancing
+query routing
+replication manager
+node fencing (STONITH)
+connection pooling
+distributed system coordination and metadata storage
+    Key-Value Store
+    Configuration management
+    Distributed locking
+    Service discovery
+    Atomic broadcast
+    Sequence numbers
+    Pointers to data in eventually consistent stores
 
 ## Integration of Failover Mechanisms with Load-Balancing Techniques
 
@@ -98,3 +63,73 @@ Even in a well-tuned PostgreSQL high- availability setup, issues can arise that 
 + **Failover issues:** A common issue in high- availability setups is failover failure. This can occur if the standby server is not properly synchronized with the primary server, or if network issues prevent the failover tool from promoting a standby server. Regular testing of failover configurations ensures that the system is prepared to handle real-world failures.
 + **Network latency and connectivity:** In geographically distributed PostgreSQL high- availability setups, network latency can lead to performance issues or replication lag. Monitoring network performance and optimizing replication settings, such as synchronous_commit and wal_level, can help mitigate latency-related problems.
 + **Load balancer misconfigurations:** Misconfigured load balancers can cause inefficient distribution of database queries, leading to performance bottlenecks. Verifying load balancer rules and ensuring that traffic is properly routed across available servers is essential for maintaining smooth operations.
+
+## HAProxy & pgbouncer vs pgpoolII
+
+PgPoolII is a generalist software which try to provide features of both a proxy and a connection pooler. Because of this it doesn't do anything too well.
+
+PgBouncer is a simple lightweight specialist which provide only connection pooling, but it does that very well.
+
+HAProxy is a specialized proxy, and it performs proxy tasks better than PgPoolII on the same hardware. Given that PgBouncer is so lightweight, it should be colocated on the same servers as the control panes and worker nodes. Thus on the same hardwares, HAProxy + PgBouncer would most likely outperforms PgPoolII in load balancing and connection pooling.
+
+PgPoolII therefore is best use in case which strict control over connection requests has been obtained. So that PgPoolII would receive only optimal amount of requests for its server hardwares e.g. test environments. Since it is simpler to setup and configure relative to HAProxy + PgBouncer.
+
+However PgPoolII could perform query routing (write/read splitting) out of the box. A feature lacking in both HAProxy and Pgbouncer.
+
+HAProxy and PgPool-II have different primary functions, so HAProxy cannot directly replace PgPool-II. HAProxy is a load balancer, primarily used for distributing network traffic, while PgPool-II is a connection pooler and load balancer specifically for PostgreSQL databases. While HAProxy can be used in conjunction with PgPool-II to enhance overall system performance and availability, it does not offer the same level of PostgreSQL-specific features as PgPool-II, such as connection pooling and query caching.
+
+HAProxy can be used to distribute traffic to PgPool-II instances, which then handle the database-specific load balancing and connection pooling. HAProxy does not offer the same database-level features as PgPool-II, like query caching or automatic failover for PostgreSQL servers.
+
+While HAProxy and PgPool-II can be used together, they serve different purposes. HAProxy manages network traffic, while PgPool-II manages PostgreSQL-specific connections and load balancing. HAProxy is not a direct replacement for PgPool-II because it lacks the PostgreSQL-specific functionalities.
+
+In situations where high throughput is expected, application query routing where requests are routed directly to specified ports on HAProxy servers which then load-balance these resquest to pgbouncer is a viable option. In this setting, Keepalived is responsible for failover.
+
+> In Summary
+
++ For simple connection pooling and load balancing with a focus on simplicity and performance, PgBouncer is often a good choice.
++ For more complex scenarios involving multiple servers, failover, and advanced features, PgPool-II can be a better fit.
++ HAProxy is primarily used for load balancing and can be used in conjunction with connection poolers like PgBouncer or PgPool-II to achieve high availability and load distribution across multiple database servers.
+
+### HAProxy
+
+HAProxy is an open source software widely used for load balancing and proxying TCP and HTTP-based applications, including PostgreSQL databases. It serves as an intermediary between clients and PostgreSQL servers, distributing incoming requests across multiple servers to prevent overload and ensure system reliability.
+
+HAProxy sits between PostgreSQL clients and servers, intelligently routing traffic based on server availability and health. Its real-time monitoring capabilities ensure that only fully operational servers handle database requests, significantly reducing the risk of downtime. When a server fails, HAProxy automatically redirects traffic to healthy nodes, making it a key player in PostgreSQL’s high availability architecture.
+
+Offers features like SSL termination, health checks, and detailed logging, ideal for web applications and high-traffic scenarios. Suitable for front-end web servers or application servers interacting with a database.
+
+> Key benefits
+
++ Scalability: By distributing load among multiple servers, HAProxy ensures that the PostgreSQL system can handle an increased number of simultaneous connections and provide continual optimal performance as demand grows.
++ Reliability: HAProxy offers robust failure management by redirecting traffic to standby servers if a primary instance goes down. This aids significantly in maintaining continuous database availability.
++ Failover support: Automatic failover capabilities enable seamless transition to backup systems, minimizing downtime and impact on users during server failures or maintenance.
+
+### PGpool-II
+
+PGpool-II goes beyond basic load balancing by offering advanced features, such as connection pooling, query routing, and in-depth failover management. As a middleware solution, it is highly effective in optimizing resource use and managing multiple connections in large-scale PostgreSQL deployments. A PostgreSQL-specific connection pooler and load balancer.
+
+PGpool-II balances the load by distributing read queries across replica servers, while write queries are directed to the primary server. This helps improve performance, especially in read-heavy environments. PGpool-II can be configured to support synchronous and asynchronous replication setups, providing flexibility in how databases are managed.
+
+Manages connections, distributes load across multiple PostgreSQL servers, and provides query caching. Optimizes PostgreSQL resource utilization and reduces database load, especially in high-throughput environments.
+
+> Key benefits
+
++ Connection pooling: PGpool-II reduces the overhead of establishing new connections by pooling existing connections. This allows the database to serve more clients simultaneously with reduced latency.Connection pooling: PGpool-II reduces the overhead of establishing new connections by pooling existing connections. This allows the database to serve more clients simultaneously with reduced latency.
++ Query routing: It intelligently routes queries to appropriate servers, ensuring efficient use of resources. For instance, read queries can be sent to replica servers, while write operations are handled by the master.Query routing: It intelligently routes queries to appropriate servers, ensuring efficient use of resources. For instance, read queries can be sent to replica servers, while write operations are handled by the master.
++ Failover management: Similar to HAProxy, PGpool-II provides failover capabilities. If a primary server goes down, it automatically promotes a standby server and reroutes traffic accordingly, ensuring business continuity.Failover management: Similar to HAProxy, PGpool-II provides failover capabilities. If a primary server goes down, it automatically promotes a standby server and reroutes traffic accordingly, ensuring business continuity.
+
+## Distributed system coordination and metadata storage
+
+### etcd vs consul
+
+etcd and Consul are both distributed, highly available key-value stores, but they cater to different needs and have different strengths. etcd is primarily designed for distributed configuration management and coordination, particularly within Kubernetes, focusing on strong consistency and reliability. Consul, on the other hand, is a more comprehensive solution for service discovery, configuration management, and service mesh capabilities, offering a wider range of features and ease of use for building complex, distributed applications.
+
+The name “etcd” originated from two ideas, the unix “/etc” folder and “d"istributed systems. The “/etc” folder is a place to store configuration data for a single system whereas etcd stores configuration information for large scale distributed systems. Hence, a “d"istributed “/etc” is “etcd”.
+
+etcd is designed as a general substrate for large scale distributed systems. These are systems that will never tolerate split-brain operation and are willing to sacrifice availability to achieve this end. etcd stores metadata in a consistent and fault-tolerant way. An etcd cluster is meant to provide key-value storage with best of class stability, reliability, scalability and performance.
+
+Distributed systems use etcd as a consistent key-value store for configuration management, service discovery, and coordinating distributed work. Many organizations use etcd to implement production systems such as container schedulers, service discovery services, and distributed data storage. Common distributed patterns using etcd include leader election, distributed locks, and monitoring machine liveness.
+
+Consul is an end-to-end service discovery framework. It provides built-in health checking, failure detection, and DNS services. In addition, Consul exposes a key value store with RESTful HTTP APIs. As it stands in Consul 1.0, the storage system does not scale as well as other systems like etcd or Zookeeper in key-value operations; systems requiring millions of keys will suffer from high latencies and memory pressure. The key value API is missing, most notably, multi-version keys, conditional transactions, and reliable streaming watches.
+
+etcd and Consul solve different problems. If looking for a distributed consistent key value store, etcd is a better choice over Consul. If looking for end-to-end cluster service discovery, etcd will not have enough features; choose Kubernetes, Consul, or SmartStack.
