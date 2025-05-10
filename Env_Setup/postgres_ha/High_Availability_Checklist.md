@@ -12,6 +12,8 @@ To ensure high availability in a PostgreSQL environment, implement replication, 
     + **Streaming Replication:** Replicates the entire database cluster (physical changes) from a primary to one or more standbys, allowing for immediate failover if the primary fails.
     + **Logical Replication:** Replicates individual tables or schemas, allowing for more flexible replication scenarios.
     + **Synchronous vs. Asynchronous Replication:** Choose the appropriate replication type based on your tolerance for potential data loss and performance requirements.
+    + Bi-directional replication
+    + CAP theorem & PACELC design principle
     + Sharding
     + Partitioning
     + Indexing
@@ -19,7 +21,7 @@ To ensure high availability in a PostgreSQL environment, implement replication, 
     + **Track Replication Lag:** Ensure standby servers are up-to-date with the primary.
     + **Monitor Resource Utilization:** Monitor CPU, memory, and disk I/O on both primary and standby servers.
     + **Set up Alerts:** Configure alerts to notify administrators of potential problems like replication lag, resource constraints, or failed failover attempts.
-4. Backup and Restore
+4. Backup; Continuous Archiving; and Restore
     + **Regular Backups:** Create regular backups of the entire database cluster.
     + **Backup Storage:** Store backups on a separate drive or offsite to prevent data loss from a single point of failure.
     + **Restore Procedures:** Document clear procedures for restoring backups in case of data corruption or failure.
@@ -32,8 +34,9 @@ To ensure high availability in a PostgreSQL environment, implement replication, 
 7. Proxy
     + Connection Pooling
     + Load-balancing
-    + Query Routing
+    + Requests/Queries Routing (Access Control List (ACL))
     + Query Caching
+    + Virtual IP (VIP)
 8. Distributed system coordination and metadata storage
     + Key-Value Store
     + Configuration management
@@ -42,6 +45,11 @@ To ensure high availability in a PostgreSQL environment, implement replication, 
     + Atomic broadcast
     + Sequence numbers
     + Pointers to data in eventually consistent stores
+9. Security
+    + TCP/HTTP SSL secured connections
+    + Data at rest encryption (pg_tde)
+    + Table/Row level access authorization
+    + Role based user management
 
 ## Integration of Failover Mechanisms with Load-Balancing Techniques
 
