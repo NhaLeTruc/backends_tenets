@@ -1,6 +1,6 @@
 # Ansible Managed Services and APIs
 
-There are many options for managing Ansible applications with a graphical UI. This is the main avenue for Cloud Service Providers and Consultancies to charge people for using Ansible professionally. Autobase would be a crude example.
+There are many options for managing Ansible applications with a graphical UI. This is the main avenue for Cloud Service Providers and Consultancies to charge people for using Ansible professionally.
 
 ## RHAAP
 
