@@ -66,3 +66,50 @@ This mechanism provides the extra benefit of not having to rely on unstable or u
 > In order to extract information such as a cookie, a host header field, a URL or whatever, a load balancer may need to decrypt SSL/TLS traffic and even possibly to re-encrypt it when passing it to the server. This expensive task explains why in some high-traffic infrastructures, sometimes there may be a lot of load balancers.
 ---
 > Since a layer 7 load balancer may perform a number of complex operations on the traffic (decrypt, parse, modify, match cookies, decide what server to send to, etc), it can definitely cause some trouble and will very commonly be accused of being responsible for a lot of trouble that it only revealed. That's why logging is an extremely important aspect of layer 7 load balancing. Once a trouble is reported, it is important to figure if the load balancer took a wrong decision and if so why so that it doesn't happen anymore.
+
+## Load balancing algorithms
+
+### Dynamic load balancing algorithms
+
+- **Least connection:** Checks which servers have the fewest connections open at the time and sends traffic to those servers. This assumes all connections require roughly equal processing power. Use Cases:
+  - Ideal for applications with varying server capacities.
+  - Ensures that heavily loaded servers receive fewer connections.
+  - Requires monitoring of active connections.
+- **Weighted least connection:** Gives administrators the ability to assign different weights to each server, assuming that some servers can handle more connections than others.
+- **Weighted response time:** Averages the response time of each server, and combines that with the number of connections each server has open to determine where to send traffic. By sending traffic to the servers with the quickest response time, the algorithm ensures faster service for users.
+- **Resource Based (Adaptive) load balancing method:** Resource based (or adaptive) load balancing makes decisions based on status indicators retrieved by LoadMaster from the back-end servers. The status indicator is determined by a custom program (an “agent”) running on each server. LoadMaster queries each server regularly for this status information and then sets the dynamic weight of the real server appropriately.
+  
+In this fashion, the load balancing method is essentially performing a detailed “health check” on the real server. This method is appropriate in any situation where detailed health check information from each server is required to make load balancing decisions.
+
+For example: this load balancing algorithm would be useful for any application where the workload is varied and detailed application performance and status is required to assess server health.
+
+This load balancing method can also be used to provide application-aware health checking for Layer 4 (UDP) services via the load balancing method.
+
+- **Resource Based (SDN Adaptive) load balancing method:** SDN (Software Defined Network) adaptive is a load balancing algorithm that combines knowledge from Layers 2, 3, 4 and 7 and input from an SDN (Software Defined Network) controller to make more optimized traffic distribution decisions.
+
+This allows information about the status of the servers, the status of the applications running on them, the health of the network infrastructure, and the level of congestion on the network to all play a part in the load balancing decision making.
+
+This load balancing method is appropriate for deployments that include an SDN (Software Defined Network) controller.
+
+### Static load balancing algorithms
+
+- **Round robin:** Round robin load balancing distributes traffic to a list of servers in rotation using the Domain Name System (DNS). An authoritative nameserver will have a list of different A records for a domain and provides a different one in response to each DNS query. Use Cases:
+  - Suitable for scenarios where all servers have similar capabilities.
+  - Simple and easy to implement.
+  - May not consider server health or load.
+- **Weighted round robin:** Allows an administrator to assign different weights to each server. Servers deemed able to handle more traffic will receive slightly more. Weighting can be configured within DNS records. Use Cases:
+  - Useful when servers have different capabilities.
+  - Allows fine-tuning of load distribution.
+  - Requires understanding server performance metrics.
+- **IP hash:** Combines incoming traffic's source and destination IP addresses and uses a mathematical function to convert it into a hash. Based on the hash, the connection is assigned to a specific server. Use Cases:
+  - Ensures that a specific client consistently connects to the same server.
+  - Commonly used for session persistence.
+  - May not handle server failures gracefully.
+
+## References
+
+1. [load-balancing-algorithms-techniques](https://kemptechnologies.com/load-balancer/load-balancing-algorithms-techniques)
+2. [haproxy load balancing](https://www.haproxy.com/documentation/haproxy-configuration-manual/latest/intro/#3.3.5)
+3. [types-of-load-balancing](https://www.cloudflare.com/learning/performance/types-of-load-balancing-algorithms/)
+4. [aws-types-of-load-balancing](https://aws.amazon.com/what-is/load-balancing/)
+5. [load-balancing-algorithms](https://www.designgurus.io/course-play/grokking-system-design-fundamentals/doc/load-balancing-algorithms)
