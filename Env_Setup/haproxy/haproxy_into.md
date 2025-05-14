@@ -47,3 +47,7 @@ Once HAProxy is started, it does exactly 3 things :
 - process incoming connections;
 - periodically check the servers' status (known as health checks);
 - exchange information with other haproxy nodes.
+
+## Reference
+
+1. [HAProxy introduction](https://www.haproxy.com/documentation/haproxy-configuration-manual/latest/intro/)
