@@ -9,7 +9,7 @@ WAL-G is the successor of WAL-E with a number of key differences. WAL-G uses LZ4
 There are two ways how you can configure WAL-G:
 
 1. Using environment variables
-2. Using a config file
+2. Using a config file e.g. .walg.json
 
 **--config /path** flag can be used to specify the path where the config file is located.
 
