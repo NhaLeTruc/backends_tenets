@@ -46,3 +46,25 @@ repmgr is a suite of open-source tools to manage replication and failover within
   2. performing failover by detecting failure of the primary and promoting the most suitable standby server
   3. provide notifications about events in the cluster to a user-defined script which can perform tasks such as sending alerts by email
 
+## Repmgr user and metadata
+
+In order to effectively manage a replication cluster, repmgr needs to store information about the servers in the cluster in a dedicated database schema. This schema is automatically created by the repmgr extension, which is installed during the first step in initializing a repmgr-administered cluster and contains the following objects:
+
+### Tables
+
+- repmgr.events: records events of interest
+- repmgr.nodes: connection and status information for each server in the replication cluster
+- repmgr.monitoring_history: historical standby monitoring information written by repmgrd
+
+### Views
+
+- repmgr.show_nodes: based on the table repmgr.nodes, additionally showing the name of the server's upstream node
+- repmgr.replication_status: when repmgrd's monitoring is enabled, shows current monitoring status for each standby.
+
+The repmgr metadata schema can be stored in an existing database or in its own dedicated database. Note that the repmgr metadata schema cannot reside on a database server which is not part of the replication cluster managed by repmgr.
+
+A database user must be available for repmgr to access this database and perform necessary changes. This user does not need to be a superuser, however some operations such as initial installation of the repmgr extension will require a superuser connection (this can be specified where required with the command line option --superuser).
+
+## Installation
+
+1. [installation](https://www.repmgr.org/docs/current/installation.html)
