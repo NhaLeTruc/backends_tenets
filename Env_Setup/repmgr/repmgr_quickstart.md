@@ -128,6 +128,120 @@ repmgr.conf should not be stored inside the PostgreSQL data directory, as it cou
 ---
 > If your distribution places the repmgr binaries in a location other than the PostgreSQL installation directory, specify this with repmgr_bindir to enable repmgr to perform operations (e.g. repmgr cluster crosscheck) on other nodes.
 
+## Register the primary server
+
+To enable repmgr to support a replication cluster, the primary node must be registered with repmgr. This installs the repmgr extension and metadata objects, and adds a metadata record for the primary server:
+
+```bash
+    $ repmgr -f /etc/repmgr.conf primary register
+    INFO: connecting to primary database...
+    NOTICE: attempting to install extension "repmgr"
+    NOTICE: "repmgr" extension successfully installed
+    NOTICE: primary node record (id: 1) registered
+```
+
+Verify status of the cluster like this:
+
+```bash
+    $ repmgr -f /etc/repmgr.conf cluster show
+     ID | Name  | Role    | Status    | Upstream | Connection string
+    ----+-------+---------+-----------+----------+--------------------------------------------------------
+     1  | node1 | primary | * running |          | host=node1 dbname=repmgr user=repmgr connect_timeout=2
+```
+
+The record in the repmgr metadata table will look like this:
+
+```bash
+    repmgr=# SELECT * FROM repmgr.nodes;
+    -[ RECORD 1 ]----+-------------------------------------------------------
+    node_id          | 1
+    upstream_node_id |
+    active           | t
+    node_name        | node1
+    type             | primary
+    location         | default
+    priority         | 100
+    conninfo         | host=node1 dbname=repmgr user=repmgr connect_timeout=2
+    repluser         | repmgr
+    slot_name        |
+    config_file      | /etc/repmgr.conf
+```
+
+Each server in the replication cluster will have its own record. If repmgrd is in use, the fields upstream_node_id, active and type will be updated when the node's status or role changes.
+
+## Clone the standby server
+
+Create a repmgr.conf file on the standby server. It must contain at least the same parameters as the primary's repmgr.conf, but with the mandatory values node, node_name, conninfo (and possibly data_directory) adjusted accordingly, e.g.:
+
+```conf
+    node_id=2
+    node_name='node2'
+    conninfo='host=node2 user=repmgr dbname=repmgr connect_timeout=2'
+    data_directory='/var/lib/postgresql/data'
+```
+
+Use the --dry-run option to check the standby can be cloned:
+
+```bash
+    $ repmgr -h node1 -U repmgr -d repmgr -f /etc/repmgr.conf standby clone --dry-run
+    NOTICE: using provided configuration file "/etc/repmgr.conf"
+    NOTICE: destination directory "/var/lib/postgresql/data" provided
+    INFO: connecting to source node
+    NOTICE: checking for available walsenders on source node (2 required)
+    INFO: sufficient walsenders available on source node (2 required)
+    NOTICE: standby will attach to upstream node 1
+    HINT: consider using the -c/--fast-checkpoint option
+    INFO: all prerequisites for "standby clone" are met
+```
+
+If no problems are reported, the standby can then be cloned with:
+
+```bash
+    $ repmgr -h node1 -U repmgr -d repmgr -f /etc/repmgr.conf standby clone
+
+    NOTICE: using configuration file "/etc/repmgr.conf"
+    NOTICE: destination directory "/var/lib/postgresql/data" provided
+    INFO: connecting to source node
+    NOTICE: checking for available walsenders on source node (2 required)
+    INFO: sufficient walsenders available on source node (2 required)
+    INFO: creating directory "/var/lib/postgresql/data"...
+    NOTICE: starting backup (using pg_basebackup)...
+    HINT: this may take some time; consider using the -c/--fast-checkpoint option
+    INFO: executing:
+      pg_basebackup -l "repmgr base backup" -D /var/lib/postgresql/data -h node1 -U repmgr -X stream
+    NOTICE: standby clone (using pg_basebackup) complete
+    NOTICE: you can now start your PostgreSQL server
+    HINT: for example: pg_ctl -D /var/lib/postgresql/data start
+```
+
+This has cloned the PostgreSQL data directory files from the primary node1 using PostgreSQL's pg_basebackup utility. Replication configuration containing the correct parameters to start streaming from this primary server will be automatically appended to postgresql.auto.conf. (In PostgreSQL 11 and earlier the file recovery.conf will be created).
+
+> By default, any configuration files in the primary's data directory will be copied to the standby. Typically these will be postgresql.conf, postgresql.auto.conf, pg_hba.conf and pg_ident.conf. These may require modification before the standby is started.
+
+Make any adjustments to the standby's PostgreSQL configuration files now, then start the server.
+
+## Register the standby
+
+Register the standby server with:
+
+```bash
+    $ repmgr -f /etc/repmgr.conf standby register
+    NOTICE: standby node "node2" (ID: 2) successfully registered
+```
+
+Check the node is registered by executing repmgr cluster show on the standby:
+
+```bash
+    $ repmgr -f /etc/repmgr.conf cluster show
+
+     ID | Name  | Role    | Status    | Upstream | Location | Priority | Timeline | Connection string
+    ----+-------+---------+-----------+----------+----------+----------+----------+--------------------------------------
+     1  | node1 | primary | * running |          | default  | 100      | 1        | host=node1 dbname=repmgr user=repmgr
+     2  | node2 | standby |   running | node1    | default  | 100      | 1        | host=node2 dbname=repmgr user=repmgr
+```
+
+Both nodes are now registered with repmgr and the records have been copied to the standby server.
+
 ## References
 
 1. [quickstart](https://www.repmgr.org/docs/current/quickstart.html)
