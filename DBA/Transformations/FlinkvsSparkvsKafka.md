@@ -1,0 +1,7 @@
+# Apache Flink vs Spark vs Kafka
+
+Flink is a dedicated streaming solution which often outperforming Spark in true data streaming's stateful computations and complex event processing. Flink is newer than Spark and also under constant development support. Although Flink's communities and ecosystem is not as established. Currently, Flink could handle batch processing though with potentially less efficiency comparing to Spark. Both Flink and Spark provides fault tolerance mechanisms, which are tailored toward either streaming or batch jobs. Spark could handle dirty data batches with greater flexibility than Flink due to the latter's preference for primary key.
+
+Kafka is shipped with Kafka stream, a lesser contender for Flink in data stream processing. Its prime advantage is full integration with Kafka, a great message broker that often serve as buffer for computing engines like Flink or Spark. But other than that Kafka stream's feature set is behind both Spark and Flink. The same goes for its support and communities. It is best for very simple streaming jobs, which already involved Kafka.
+
+The first consideration for choosing Flink or Spark or Kafka is often maturity and communities supports. In these regards, Spark and Kafka is ahead. Flink is very promising but it is practically still in development as of June 2025. Except in cases of true real-time streaming applications or having in-house Flink expertises, Flink shouldn't be relied on for production operations.
