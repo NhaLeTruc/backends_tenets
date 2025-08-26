@@ -98,3 +98,22 @@ cp analysis_job_zip.zip <path to docker-spark-cluster>/apps/analysis_job_zip.zip
 cp package_env/job_dependencies.tar.gz <path to docker-spark-cluster>/apps/job_dependencies.tar.gz
 ```
 
+Next steps are:
+
++ Connect to the Spark master node in interactive mode
++ Create a folder called environment
++ Unpack the job_dependencies.tar.gz to the environment folder
++ Point Spark to use Python in the environment folder
++ Execute the job
+
+```bash
+docker exec -it docker-spark-cluster-spark-master-1 /bin/bash
+mkdir environment
+tar -xzf /opt/spark-apps/job_dependencies.tar.gz -C ./environment
+export PYSPARK_PYTHON=./environment/bin/python
+/opt/spark/bin/spark-submit --master <spark master URL> --archives /opt/spark-apps/job_dependencies.tar.gz#environment --py-files /opt/spark-apps/analysis_job_zip.zip /opt/spark-apps/second_job.py
+```
+
+> The job appears in the Spark UI at http://localhost:9000, and job progress can be tracked in the Spark UI at http://localhost:4040.
+-------------
+> In real projects, the process of packaging and deployment of the job to the cluster is managed by a CI/CD pipeline, and the job is usually scheduled and executed using an orchestrator such as Apache Airflow as part of a bigger pipeline. The above examples have been written for beginners, and should provide a good reference of the overall process, however, the steps may vary slightly depending on the project, the nature of the target Spark cluster, tech stack, and many other things.
