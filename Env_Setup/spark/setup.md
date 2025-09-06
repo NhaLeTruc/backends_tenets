@@ -39,6 +39,14 @@ Docker Spark cluster setup using docker compose for local testing is ideal.
 Use `entrypoint.sh` to zip then mount code and data onto test docker Spark cluster. After which these command would run `spark-submit`:
 
 ```bash
+rm -rf job-package
+mkdir job_package
+cp common.py job_package/common.py
+zip -r -j job_zip.zip job_package/*.py
+cp ./job_zip.zip <path to docker-compose folder>/apps
+cp ./job.py <path to docker-compose folder>/apps
+cp <path to data>/yellow_tripdata_2023-09.parquet <path to docker-spark-cluster folder>/data
+
 docker exec -it docker-spark-cluster-spark-master-1 /bin/bash
 
 /opt/spark/bin/spark-submit --master <master URL> --py-files /opt/spark-apps/job_zip.zip /opt/spark-apps/job.py
