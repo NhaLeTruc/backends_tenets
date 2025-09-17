@@ -100,4 +100,3 @@ Next, we have a supporting function called `list()`. This function allows us to 
 ```txt
 function list():format=markdown numbered
 ```
-
