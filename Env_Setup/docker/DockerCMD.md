@@ -25,6 +25,10 @@ sudo docker compose down --volumes --remove-orphans
 
 sudo docker compose down -rmi all
 
+sudo docker volume ls
+
+sudo docker logs <CONTAINER_ID>
+
 # Show Jupyter's kernels
 jupyter kernelspec list
 
