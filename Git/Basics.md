@@ -3,9 +3,11 @@
 ## Common Git Branching Strategies
 
 ### 1. GitFlow
+
 A robust branching model designed for larger projects with scheduled releases.
 
 #### Structure
+
 - **main/master**: Production-ready code
 - **develop**: Main development branch
 - **feature/***:  New features
@@ -13,6 +15,7 @@ A robust branching model designed for larger projects with scheduled releases.
 - **hotfix/***:  Production fixes
 
 #### Example workflow:
+
 ```bash
 # Start a new feature
 git checkout develop
@@ -33,14 +36,17 @@ git tag -a v1.0.0
 ```
 
 ### 2. Trunk-Based Development
+
 Emphasizes small, frequent commits directly to the main branch.
 
 #### Structure
+
 - **main**: Single source of truth
 - **feature-flags**: For managing in-progress features
 - Short-lived feature branches (1-2 days max)
 
 #### Example workflow:
+
 ```bash
 # Small feature changes
 git checkout -b small-fix
@@ -54,13 +60,16 @@ git checkout main
 ```
 
 ### 3. GitHub Flow
+
 Simplified workflow suitable for continuous delivery.
 
 #### Structure
+
 - **main**: Production-ready code
 - **feature branches**: All development work
 
 #### Example workflow:
+
 ```bash
 # Create feature branch
 git checkout -b new-feature
@@ -75,14 +84,17 @@ git merge new-feature
 ```
 
 ### 4. Release Branch Strategy
+
 Focuses on maintaining multiple versions in production.
 
 #### Structure
+
 - **main**: Latest development
 - **release/***: Supported versions
 - **hotfix/***: Critical fixes
 
 #### Example workflow:
+
 ```bash
 # Create release branch
 git checkout -b release/2.0
@@ -95,6 +107,7 @@ git merge hotfix/2.0.1
 ```
 
 ## Best Practices
+
 1. Document your chosen strategy
 2. Enforce branch naming conventions
 3. Use meaningful commit messages
@@ -104,6 +117,7 @@ git merge hotfix/2.0.1
 7. Clean up merged branches
 
 ## Strategy Selection Considerations
+
 - Team size and experience level
 - Project complexity
 - Release frequency
