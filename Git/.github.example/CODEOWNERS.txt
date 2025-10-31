@@ -1,0 +1,8 @@
+# Code owners mapping (teams or users)
+# Use team handles: @org/team-name or individual @username
+/.github/ @devops-team
+/src/backend/ @backend-team
+/src/frontend/ @frontend-team
+/docs/ @docs-team
+# fallback owner
+* @org/repo-maintainers
