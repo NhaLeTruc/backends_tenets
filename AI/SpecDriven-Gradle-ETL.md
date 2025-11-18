@@ -1,4 +1,4 @@
-# Revised bash for Spark App
+# Generate Speckit project
 
 ```bash
 specify init <PROJECT_NAME>
