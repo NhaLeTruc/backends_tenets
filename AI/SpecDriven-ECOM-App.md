@@ -23,7 +23,7 @@ specify check
 Use the `/speckit.constitution` command to create your project's governing principles and development guidelines that will guide all subsequent development.
 
 ```bash
-/speckit.constitution Create principles focused on clean code, strict TDD adherent, decoupled architecture, site reliability engineering or SRE, observability, and web security best practice for  an generic ecommerce website.
+/speckit.constitution Create principles focused on clean code, strict TDD adherent, decoupled architecture, site reliability engineering or SRE, observability, and web security best practice for an generic ecommerce website.
 ```
 
 ## Specify
