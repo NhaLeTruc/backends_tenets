@@ -44,4 +44,12 @@ Use the `/speckit.specify` command to describe what you want to build for the OL
 Use the `/speckit.plan` command to provide your tech stack and architecture choices for the OLTP's core capabilities tech demo.
 ```
 
+```txt
+Review the codebase. Find syntax errors, inline imports, code quality issues, bugs, security problems, possible improvements. Focus and think hard. DO NOT GUESS, GIVE EVIDENCES FOR YOUR CLAIMS. Finally list out everything you found.
+```
 
+------------------------------------------------------------------------------------------------
+
+```txt
+/speckit.implement completes phase 1 to 100% completion. You MUST IMPLEMENT ALL PHASE 1 TASKS. NO TODO COMMENTS.
+```
