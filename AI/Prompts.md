@@ -51,5 +51,12 @@ Review the codebase. Find syntax errors, inline imports, code quality issues, bu
 ------------------------------------------------------------------------------------------------
 
 ```txt
-/speckit.implement completes phase 1 to 100% completion. You MUST IMPLEMENT ALL PHASE 1 TASKS. NO TODO COMMENTS.
+/speckit.implement You MUST IMPLEMENT ALL PHASE 1 TASKS. NO TODO COMMENTS, PLACEHOLDERS, OR STUBS IMPLEMENATIONS.
+
+
+/speckit.implement You MUST IMPLEMENT ALL OF EACH PHASE's TASKS. NO TODO COMMENTS, PLACEHOLDERS, OR STUBS IMPLEMENATIONS. VERIFIES THAT ALL TESTS PASS BEFORE MOVING ON.
+```
+
+```txt
+Review the codebase. Lists out for stubs implementations, missing deliveries, inline import errors, and other bugs. Additionally, suggests possible improvements for the project.
 ```
