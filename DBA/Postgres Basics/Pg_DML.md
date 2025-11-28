@@ -45,3 +45,37 @@ When an UPDATE statement is executed in PostgreSQL, the following sequence of ev
   - If a RETURNING clause is used, the specified values from the newly updated rows are returned to the client.
 - **Vacuuming**:
   - Periodically, the autovacuum process or manual VACUUM commands run to reclaim space occupied by dead rows and update statistics, preventing excessive table bloat.
+
+## what happens when a insert statement is executed in postgres
+
+When an INSERT statement is executed in PostgreSQL, a series of steps occur to add new data to a table:
+
+- **Parsing and Analysis**: PostgreSQL receives the INSERT query and analyzes its syntax and semantics, identifying the target table, columns, and values.
+
+- **Schema and Permission Checks**: The system verifies the existence of the specified table and columns and checks if the user has the necessary privileges to perform an INSERT operation on that table and its columns.
+
+- **Data Validation**: The data types of the provided values are validated against the data types of the corresponding target columns. Constraints (e.g., NOT NULL, UNIQUE, CHECK, foreign key constraints) are also checked to ensure data integrity. Default values are applied to columns not explicitly provided in the INSERT statement.
+
+- **Row Insertion**: If all checks pass, the new row is written to the appropriate data blocks within PostgreSQL's shared buffers. This involves updating internal data structures and potentially modifying index entries if indexes are defined on the table.
+
+- **Transaction Management**: The INSERT operation typically occurs within the context of a transaction. If the transaction is committed, the changes are permanently written to disk. If the transaction is rolled back, the inserted row is discarded.
+
+- **Trigger Execution (Optional)**: If AFTER INSERT triggers are defined on the table, they are automatically fired after the row has been successfully inserted.
+
+- **Return Value (Optional)**: If the INSERT statement includes a RETURNING clause, the specified values from the newly inserted row(s) are returned to the client.
+
+## what happens when a delete statement is executed in postgres
+
+When a DELETE statement is executed in PostgreSQL, the following actions occur:
+
+- **Concurrency Control (MVCC)**: PostgreSQL utilizes Multi-Version Concurrency Control (MVCC). Instead of physically removing the data immediately, the DELETE operation marks the identified rows as "dead" or "invisible" to new transactions. This allows other concurrent transactions that started before the DELETE to still see the old versions of the data, ensuring data consistency and preventing locking issues.
+
+- **Index Updates**: If the deleted rows contain values that are part of an index, the index entries corresponding to those rows are also marked as "dead" or updated to reflect the deletion.
+
+- **Foreign Key Checks**: If the table has foreign key constraints, PostgreSQL checks to ensure that deleting the rows does not violate these constraints. This might involve checking for dependent rows in other tables or, if ON DELETE CASCADE is specified, recursively deleting dependent rows.
+
+- **Transaction Management**: The DELETE operation is typically part of a transaction. The changes are not permanently applied to the database until a COMMIT statement is issued. If a ROLLBACK command is executed before COMMIT, the changes made by the DELETE statement are undone, and the deleted rows are restored.
+
+- **Disk Space Reclamation (VACUUM)**: While the DELETE statement marks rows as dead, it does not immediately reclaim the disk space occupied by those rows. This space becomes available for reuse by new data inserted into the table, but a VACUUM or VACUUM FULL operation is required to fully reclaim the space and reduce the physical size of the table and its indexes on disk. VACUUM FULL also rewrites the entire table, which can be more disruptive but offers full space reclamation.
+
+- **Returning Deleted Data (Optional)**: If the RETURNING clause is used with the DELETE statement, PostgreSQL returns the specified columns (or all columns with *) of the deleted rows as part of the query result.
