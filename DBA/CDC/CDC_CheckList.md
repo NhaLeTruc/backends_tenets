@@ -1,5 +1,30 @@
 # CDC Pipelines Checklist
 
+An attempts at summarizing all aspect of CDC pipelines in general and specifically postgres' pipelines.
+
+The main challenges of CDC are all related to multi-domain communications and performance:
+
+1. Data parsing. As events traverse the pipeline, they would be parsed differently across different applications and softwares. Controlling these formats is challenging.
+2. Data throughput. different applications and softwares has different throughput of CDC event processing rates. Smoothing these so that no bottleneck develops is challenging.
+3. Data recovery. All systems eventually fail. Robust systems are capable of recovering. Building this feature into CDC pipeline without compromising performance is challenging.
+4. Data quality. CDC events are often corrupted midway through the pipeline. Detects, resolves or quarantines, and finally reintroduces these data is challenging.
+5. Schema evolution. All systems change constantly. Orchestrating and managing cascading changes throughout CDC pipeline is challenging.
+
+## Production Checklist
+
+1. **Connectors**: free, buy, or build. Each connector produces different event formats and throughputs.
+2. **Source/Sink**: each database have different throughputs for CRUD operations.
+3. **Messages brokers**: Kafka for handling cdc data fluctuations and ensure messages delivery.
+4. **Schema Registry**: crucial for handling schema evolution.
+5. **Retry strategy**: corrupted/unexpected events need to be handled properly through quarantine; retries; dead-letter queue implemenations.
+6. **Reconciliation**: connector built-in or custom builds. Scheduled and on-demand reconcilation mechanism is needed for frequent source-sink synchronization checks.
+7. **Configuration management**: CDC pipeline require large amount of configs for cross-application communication. A dedicated centralized config management system is recommended.
+8. **Security**: like any other application, data encryption, users authorization, credential management is needed for CDC system.
+9. **Performance & Capacity**: auto scaling messages broker; replicas; and connectors plan is also needed.
+10. **Transform** (Optional): Spark applications or Custom modules. Analytical replicas tend to require data transformation before replicating to sinks.
+11. **Monitoring & Alerting**: like any other application. Crucial for Retry strategy; Reconciliation; and Performance & Capacity.
+12. **Backup & Disaster Recovery**: like any other application.
+
 ## Design Patterns
 
 - **Repository Pattern**: Abstract data access for MongoDB, Delta Lake, and reconciliation state storage
@@ -12,7 +37,23 @@
 
 ## Key Components
 
-### I. MongoDB-CDC-Delta
+### I. SQLserver-CDC-Delta
+
+1. Local Infrastructure & Orchestration (Docker; Prometheus; Grafana; Jaeger)
+2. Management & Configuration scripts (bash)
+3. Reconciliation helper functions (Custom Python)
+4. Logging and Monitoring
+5. Tests (pytest; testcontainers)
+
+   - e2e
+   - load/performance
+   - contract
+   - unit
+   - integration
+
+6. Documentation (markdown)
+
+### II. MongoDB-CDC-Delta
 
 1. Local Infrastructure & Orchestration (Docker; Prometheus; Grafana; Jaeger)
 2. Management API (FastAPI)
@@ -30,7 +71,7 @@
 7. Configuration & Scripts (bash; JSON)
 8. Documentation (markdown)
 
-### II. Claude-CDC-Demo
+### III. Claude-CDC-Demo
 
 1. cdc_pipelines (kafka connect wannabe custom modules)
 2. cli (bespoke tool for pipelines management)
