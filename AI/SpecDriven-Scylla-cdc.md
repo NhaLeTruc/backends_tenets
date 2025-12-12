@@ -10,10 +10,10 @@ Spec-Driven Development flips the script on traditional software development. Fo
 
 uv tool install specify-cli --from git+https://github.com/github/spec-kit.git
 
-specify init sqlserver-pg-cdc
+specify init scylla-pg-cdc
 # Choose AI agent and cmd script type to boostrap your project.
 # Open project directory, which was created last step, in vscode.
-cd sqlserver-pg-cdc && code .
+cd scylla-pg-cdc && code .
 # optional
 specify check
 ```
@@ -23,7 +23,7 @@ specify check
 Use the `/speckit.constitution` command to create your project's governing principles and development guidelines that will guide all subsequent development.
 
 ```bash
-/speckit.constitution Create principles focused on Test Driven Development, clean easy to maintain code, and robust architecture following best practices of change data capture pipelines projects.
+/speckit.constitution Create principles focused on clean easy to maintain code, hybrid testing - Core logic uses TDD, integration tests written after, and robust architecture following best practices of change data capture pipelines projects specifically and software development generally.
 ```
 
 ## Specify
@@ -31,7 +31,7 @@ Use the `/speckit.constitution` command to create your project's governing princ
 Use the `/speckit.specify` command to describe what you want to build. Focus on the what and why, not the tech stack.
 
 ```bash
-/speckit.specify Create a change data capture pipeline from a SQL Server to a Postgres data-warehouse. The pipeline MUST has the following qualities:
+/speckit.specify Create a change data capture pipeline from a ScyllaDB to a Postgres data-warehouse. The pipeline MUST has the following qualities:
 1. Locally testable. Its docker compose environment MUST enables e2e, and integration tests locally.
 2. Communities supported. It MUST utilize free open-sourced softwares, and minimum amount of custom code.
 3. Observable. There MUST BE proper logs management systems and monitoring infrastructures.
@@ -39,6 +39,7 @@ Use the `/speckit.specify` command to describe what you want to build. Focus on 
 5. Robust. There MUST be proper reconciliation mechanism, error handling, retry strategies, and stale events handling for the cdc pipeline.
 6. Flexible. There MUST be proper handlings of schema evolutions, and dirty data.
 7. Secured. There MUST be a proper safe-guards against SQL injection and other commom security vulnerabilities.
+8. Hybrid testing. Core logic uses TDD, integration tests written after the main codebase has been completely implemented.
 ```
 
 ## Plan
@@ -47,10 +48,10 @@ Use the `/speckit.plan` command to provide your tech stack and architecture choi
 
 ```bash
 /speckit.plan First, the pipeline must uses the latest stable version of these softwares:
-1. Debezium SQL Server CDC Source Connector from Confluent Hub.
+1. Scylla CDC Source Connector from Confluent Hub.
 2. PostgreSQL Sink JDBC Connector from Confluent Hub.
 3. Kafka, Kafka Schema Registry, and Kafka Connect.
-4. SQL server Database.
+4. Scylla Database.
 5. Postgres Database.
 6. Prometheus, Grafana, and Jaeger.
 7. HashiCorp Vault.
@@ -77,5 +78,5 @@ Create enforcing mechanism for first keeping all .md file except README.md and C
 Use `/speckit.implement` to execute all tasks and build your feature according to the plan.
 
 ```bash
-/speckit.implement
+/speckit.implement You MUST IMPLEMENT ALL PHASE 1 TASKS. NO TODO COMMENTS, PLACEHOLDERS, OR STUBS IMPLEMENATIONS.
 ```
