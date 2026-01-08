@@ -51,7 +51,7 @@ Review the codebase. Find syntax errors, inline imports, code quality issues, bu
 ------------------------------------------------------------------------------------------------
 
 ```txt
-/speckit.implement You MUST IMPLEMENT ALL PHASE 1 TASKS. NO TODO COMMENTS, PLACEHOLDERS, OR STUBS IMPLEMENATIONS.
+/speckit.implement You MUST IMPLEMENT ALL PHASE 1 TASKS. NO TODO COMMENTS, PLACEHOLDERS, OR STUBS IMPLEMENATIONS. AND DO NOT CARE ABOUT TOKEN LIMITS.
 
 Following docs/COVERAGE_PLAN.md, You MUST IMPLEMENT ALL PHASE 1 TASKS. NO TODO COMMENTS, PLACEHOLDERS, OR STUBS IMPLEMENATIONS.
 
@@ -60,4 +60,52 @@ Following docs/COVERAGE_PLAN.md, You MUST IMPLEMENT ALL PHASE 1 TASKS. NO TODO C
 
 ```txt
 Review the codebase. Lists out for stubs implementations, missing deliveries, inline import errors, and other bugs. Additionally, suggests possible improvements for the project.
+```
+
+```txt
+you are a seasoned tech lead who is interviewing a senior data engineer candidate. In order to ensure that the candidate is proficient enough with Git and GitHub operations for leading a small 8-man team, you ask questions regards both Git principles, best practices, and actual commands workflows. It is a long interview (2 hours), so your questions are exhaustive. Roleplays both roles and saves the transcript to docs/git_interview.md.
+```
+
+```txt
+you are a seasoned tech lead who is interviewing a senior data engineer candidate. In order to ensure that the candidate is proficient enough with ETL from cloud datalake to local data-warehouses, you ask questions regards general principles, best practices, and actual optimization techniques. Your company key technologies are: AWS; Snowflake; Spark; and Postgres. You can pick any other techs which are deemed essential for those key technologies in your lines of questioning. It is a long interview (2 hours), so your questions are exhaustive. Roleplays both roles and saves the transcript to docs/etl_interview.md.
+```
+
+```txt
+you are a seasoned tech lead who is interviewing a senior database administrator candidate. In order to ensure that the candidate is proficient enough with setting up efficient local data-warehouses, you ask questions regards general principles, best practices, and actual optimization techniques. Your company chosen database is Postgres which is subjected to read heavy traffics. You can pick any other techs which are deemed essential for Postgres administration in your lines of questioning. It is a long interview (2 hours), so your questions are exhaustive. Roleplays both roles and saves the transcript to docs/dba_interview.md.
+```
+
+```txt
+you are a seasoned tech lead who is interviewing a senior data engineer candidate. In order to ensure that the candidate is proficient enough with utilizing AI tools at work, you ask questions regards general principles, best practices, and actual optimization techniques. Your primary focuses are the usages of Anthropic skills, AI agent, MCP, and RAG in improving engineers' productivities. You can pick any other techs which are deemed essential for these technologies in your lines of questioning. It is a long interview (2 hours), so your questions are exhaustive. Roleplays both roles and saves the transcript to docs/ai_interview.md.
+```
+
+```txt
+You are a seasoned tech lead who is interviewing a senior data engineer candidate. The candidate attached this project's repository to his application. Your primary focuses is Spark ETL efficiency so you decided to use its as base for your questions. You can pick any other techs which are deemed essential in your lines of questioning. It is a long interview (2 hours), so your questions are exhaustive. Roleplays both roles and saves the transcript to docs/_interview.md.
+```
+
+```txt
+You are a seasoned tech lead who is interviewing a senior data engineer candidate. The candidate attached this project's repository to his application. Your primary focuses is DBT efficiency so you decided to use its as base for your questions. You can pick any other techs which are deemed essential in your lines of questioning. It is a long interview (2 hours), so your questions are exhaustive. Roleplays both roles and saves the transcript to docs/_interview.md.
+```
+
+```txt
+You are a seasoned coding interview coach. You are preparing a comprehensive guide repository for software engineers to pass major companies' coding interview. In which, you will provide strategies, general principles, best practices, optimization techniques, and actual Python3 and Java21 solutions from easy to advanced coding challenges of all categories (data structures; sorting algorithms; searching algorithms; optimization algorithms; and other advanced topics). Enter planmode, focus, and think hard on creating an implementation plan to delivery this comprehensive guide repository. Save your plan in docs/implementation_plan.md.
+```
+
+```txt
+You are a seasoned tech lead who is interviewing a senior devops/platform engineer candidate. In order to ensure that the candidate is proficient enough with setting up robust CICD pipelines for data engineering works, you ask questions regards general principles, best practices, and actual optimization techniques. Your company key DevOps techs are: Git/Github, Jenkins, K8s, and Ansible. You can pick any other techs which are deemed essential for your company's key techs in your lines of questioning. It is a long interview (2 hours), so your questions are exhaustive. Roleplays both roles and saves the transcript to docs/devops_interview.md.
+```
+
+```txt
+Enter plan mode, think hard, start your research with docs/ClaudeCodeSetup.md. You are a seasoned tech lead who is creating an implementation plan for a Claude Code assisted Git repositories' boilerplate template. In order to ensure that Claude Code assisted programming and developing works in your team would be at the highest level of code and architecture quality. You plan for automatic enforcing mechanisms, preferably using bash scripts and other common open-sourced or free tools, that would help ensure your team's project would follow these best practices:
+
+- All .md or .pdf files are located in docs/ directory.
+- All tests have passed before committing works.
+- All code are linted before committing works.
+- All coding files are at most 500 lines in length.
+- All code follow SOLID principles.
+- Dependency injection is best utilized for decoupling the codebase.
+- No recursive loop is implemented in codebase.
+- No secret of any kind is exposed in codebase.
+- Commit message follows a prepared template for communication clarity.
+
+You can pick any other best practice which are deemed essential for achieving this repository template's goal. Saves the plan to docs/template_plan.md.
 ```
