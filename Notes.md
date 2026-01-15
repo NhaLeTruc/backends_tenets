@@ -1,0 +1,91 @@
+# Data Engineering and Software Development Terminology
+
+Data engineering key topics arranged in logical order and briefly defined.
+
+## Notes
+
+- Lambda vs Kappa
+- DataWarehouse vs LakeHouse
+- S3 storage partitioning strategies
+- Small files handling strategies
+- Compaction
+- Delta Lake Z-ordering
+- Schema Evolution
+- Kafka rate limiting
+- Kafka backpressure
+- Slow changing dimenstion type 2
+- Spark memory tuning
+- Spark garbage collection tuning
+- Chain of responsibility pattern
+- Exeception hierarchy
+- Retry strategies
+- Tail Recursive
+- Automatic credential redaction
+- SLA vs SLI vs SLO
+- Spark context management
+- Sparl caching
+- Repartition vs coalesce
+- ACID vs two phases commit vs saga
+- Optimal Spark cluster's ideal partition size and number calculation methods
+- Assert Spark Dataframe equality using chispa
+- Spark checkpoints.
+- Guarantees idempotent write by DELETE before INSERT
+- Spark query specific caching
+- ANOVA vs Pearson correlation coefficient
+- Cohort retention calculation methods
+- Parquet versioned schemas feature
+- Schema evolution handling strategies
+- Backward compatible ETL
+- Incremental backfilling
+- Sessionization algorithm
+- Bounce rate definition
+- Session duration formula = last timestamp - first timestamp + last action duration
+- Spark accumulatros limitations
+- Spark listeners
+- Spark drop wizard metric
+- Opentelemetry
+- Incremental processing: process only new dat not reprocessing all history
+- Snowflake algorithm for creating uniformly distributed keys.
+- Spark streaming watermark
+- Merge large data in batch not per record
+- Versioned tables in handling late data
+- Skew detection methods
+- Spark broadcast join strategies
+- JDBC partitioning optimization strategies
+- Strategies for handling 10TB data workloads using Spark
+- Data Quality: Deequ vs Great Expectation vs Custom build validators
+- Schema contract validation
+- Data drift detection
+- Spark Performance benchmark
+- Postgres MVCC
+- Postgres indexing best practices
+- Salting in Spark operations
+- Spark AQE limitations
+- Acceptable CDC and CRUD operations latency in production for analytic and operational usecases
+- Methods for determining optimal spark.sql.shuffle.partitions
+- Methods for finding Postgres queries' historical latency distribution
+- SWOT analysis of using shadow JAR or Uber JAR to deploy Spark applications
+- Scala vs Python strengths and weaknesses in data engineering works
+- Strategies and best practices for avoiding invoking full table scans in Spark operations
+- MDC propagation
+- Dead queue letter pattern
+- Circuit breaker
+- Dynamic resource allocation strategy
+- In-transit and in-storage encryption
+- Tokenization vs Encryption
+- AES-NI vs AES
+- Format preserving encryption (FPE)
+- Guides to Soft DELETE and its alternative strategies
+- Schema based vs schemaless Kafka records
+- Blue green deployment in schema evolution handling
+- Postgres VACCUM
+- CQRS
+- Async Write
+- Web Sockets
+- SSE
+- Long Polling
+- Message Queue
+- Poding
+- Workflow engines
+- Retries backoff
+- Self healing

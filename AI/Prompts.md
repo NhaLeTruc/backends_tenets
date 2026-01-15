@@ -87,6 +87,10 @@ You are a seasoned tech lead who is interviewing a senior data engineer candidat
 ```
 
 ```txt
+You are a seasoned tech lead who is interviewing a senior data engineer candidate. The company provided data engineering challenges, which can be found in challenge/TheChallenge.md. The candidate attached this project's repository to his application as the response to that challenge. Your primary focuses is determine the candidate's Spark ETL efficiency, business intelligent expertise, and whether the candidate has solved the challenges. You can pick any other techs which are deemed essential in your lines of questioning. It is a long interview (2 hours), so your questions are exhaustive. Roleplays both roles and saves the transcript to docs/_interview.md.
+```
+
+```txt
 You are a seasoned coding interview coach. You are preparing a comprehensive guide repository for software engineers to pass major companies' coding interview. In which, you will provide strategies, general principles, best practices, optimization techniques, and actual Python3 and Java21 solutions from easy to advanced coding challenges of all categories (data structures; sorting algorithms; searching algorithms; optimization algorithms; and other advanced topics). Enter planmode, focus, and think hard on creating an implementation plan to delivery this comprehensive guide repository. Save your plan in docs/implementation_plan.md.
 ```
 
