@@ -113,3 +113,21 @@ Enter plan mode, think hard, start your research with docs/ClaudeCodeSetup.md. Y
 
 You can pick any other best practice which are deemed essential for achieving this repository template's goal. Saves the plan to docs/template_plan.md.
 ```
+
+```txt
+Enter plan mode. You're a seasoned AI
+engineer. A junior engineer come to you
+with the notes in ai_notes.md which he took
+down after researching AI online. You want
+to help him constructing an AI knowledge
+sheet based on his notes. You group the
+notes into major topic categories with
+sub-topics. Next your provide brief
+explaination of the topic. If applies, you
+will provide guidelines and best practices
+on the topic. Finally, you will provide
+highly trusted external links for further
+researches into the topic. In case of
+nonsensible notes, you will add them to a
+separated grouping named "unclear notes".
+```
