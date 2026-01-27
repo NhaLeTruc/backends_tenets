@@ -361,6 +361,8 @@ stress-ng --cpu 0 --timeout 60s --metrics
 ## Part 7: Creating Your Own CPU Benchmark Suite
 
 ```python
+from pyspark.sql import Window
+
 def create_cpu_benchmark_suite(spark, num_cores):
     """Benchmark CPU quality for Spark workloads"""
     
@@ -377,8 +379,7 @@ def create_cpu_benchmark_suite(spark, num_cores):
         df1.join(df2, "id").collect()
         return time.per_counter() - start
     
-    def benchmark_window_function(spark):
-        from pyspark.sql import Window
+    def benchmark_window_function(spark):        
         df = spark.range(50_000_000).withColumn("group", F.col("id") % 1000)
         w = Window.partitionBy("group").orderBy("id")
         start = time.per_counter()
@@ -479,7 +480,7 @@ def better_calculation(total_data_gb, executor_memory_gb, executor_count, your_c
     baseline_score = 25000
     score_multiplier = your_cpu_score / baseline_score
     
-    # Start with 2 base partitions per core
+    # Start with 2 base partitions per core, because 2 threads per core is most common, but not universal.
     total_cores = executor_count * 4
     base_partitions = total_cores * 2
     
